@@ -1,0 +1,165 @@
+import { useState } from "react";
+import { CONFIG, GIFTS } from "@/lib/birthday-config";
+import { eligibleGifts, shuffle } from "@/lib/lottery";
+import { Bow, PillButton, ScrapPage, SceneTitle } from "./decor";
+import { play } from "@/lib/sfx";
+import { cn } from "@/lib/utils";
+
+export type LotteryState = { wish: string; deck: string[] | null; pickedIndex: number | null };
+
+export function Lottery({
+  state,
+  setState,
+  onConfetti,
+  onNext,
+}: {
+  state: LotteryState;
+  setState: (s: LotteryState) => void;
+  onConfetti: () => void;
+  onNext: () => void;
+}) {
+  const [copied, setCopied] = useState(false);
+  const [error, setError] = useState("");
+  const { wish, deck, pickedIndex } = state;
+  const locked = pickedIndex !== null;
+  const picked = deck && pickedIndex !== null ? GIFTS.find((g) => g.id === deck[pickedIndex]) : null;
+
+  const startDraw = () => {
+    if (!wish.trim()) { setError("Write your dream gift first, birthday girl 🎁"); return; }
+    setError("");
+    play("flip");
+    setState({ ...state, deck: shuffle(eligibleGifts()).map((g) => g.id) });
+  };
+
+  const pick = (i: number) => {
+    if (locked) return; // no double picks
+    setState({ ...state, pickedIndex: i });
+    play("yay");
+    setTimeout(onConfetti, 500);
+  };
+
+  const resultText = picked
+    ? `🎁 My birthday lottery result: ${picked.name}${picked.customField ? ` — "${wish.trim()}"` : ""}`
+    : "";
+
+  return (
+    <ScrapPage tag="scene 4 ✦ gift lottery">
+      <SceneTitle sub="First, inspect the goodies. Then let destiny do its silly little thing.">
+        Pick Your Birthday Destiny, Princess 🎀
+      </SceneTitle>
+
+      {/* Catalogue: all nine gifts */}
+      <div className="grid gap-3 sm:grid-cols-2">
+        {GIFTS.map((g, i) => (
+          <div
+            key={g.id}
+            className={cn(
+              "relative rounded-2xl border-[2.5px] border-ink p-3",
+              g.lotteryEligible ? "bg-muted" : "bg-card",
+              i % 2 ? "rotate-[0.6deg]" : "-rotate-[0.6deg]",
+              g.customField && "sm:col-span-2",
+            )}
+          >
+            <span
+              className={cn(
+                "absolute -top-3 right-3 rounded-full border-2 border-ink px-2 text-xs font-bold",
+                g.lotteryEligible ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground",
+              )}
+            >
+              {g.lotteryEligible ? "🎟 in the lottery" : "👀 display only"}
+            </span>
+            <h3 className="text-2xl">{g.name}</h3>
+            <p className="text-sm text-muted-foreground">{g.description}</p>
+            {g.id === "date" && (
+              <p className="mt-1 text-xs text-muted-foreground">
+                Where: {CONFIG.date.location} · What: {CONFIG.date.activity} — you pick, I plan. Zero pressure. 💗
+              </p>
+            )}
+            {g.customField && (
+              <label className="mt-2 block">
+                <span className="font-hand text-xl">Tell me your dream gift, birthday girl 🎁</span>
+                <textarea
+                  value={wish}
+                  disabled={!!deck}
+                  onChange={(e) => setState({ ...state, wish: e.target.value })}
+                  placeholder="Anything you want... be as specific or as chaotic as you like."
+                  rows={2}
+                  className="mt-1 w-full rounded-xl border-2 border-ink bg-card p-3 text-base outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-70"
+                />
+              </label>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {!deck && (
+        <div className="mt-6 text-center">
+          <p className="text-sm">Only the 5 🎟 gifts go into the draw. Each has the exact same chance. Pick one blind card. No take-backs. 😌</p>
+          {error && <p className="mt-2 font-bold text-destructive" role="alert">{error}</p>}
+          <PillButton className="mt-4 text-lg" onClick={startDraw}>SHUFFLE MY DESTINY 💗</PillButton>
+        </div>
+      )}
+
+      {deck && (
+        <div className="mt-8">
+          <p className="font-hand mb-4 text-center text-2xl">{locked ? "Destiny has spoken ✨" : "Tap ONE card. Choose wisely, princess."}</p>
+          <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
+            {deck.map((id, i) => {
+              const g = GIFTS.find((x) => x.id === id)!;
+              const isPicked = pickedIndex === i;
+              return (
+                <button
+                  key={i}
+                  disabled={locked}
+                  onClick={() => pick(i)}
+                  aria-label={isPicked ? `Your gift: ${g.name}` : `Mystery card ${i + 1}`}
+                  className={cn("flip-scene aspect-[3/4] w-full rounded-2xl focus-visible:outline-dashed focus-visible:outline-3 focus-visible:outline-cherry", locked && !isPicked && "opacity-40")}
+                >
+                  <div className={cn("flip-inner h-full w-full", isPicked && "flipped")}>
+                    <div className="face bg-candy grid place-items-center rounded-2xl border-[2.5px] border-ink">
+                      <Bow className="absolute -top-2 h-7 w-10" />
+                      <span className="font-hand text-5xl text-primary-foreground">?</span>
+                      <span className="absolute bottom-2 text-sm">💗✨💗</span>
+                    </div>
+                    {/* Only the picked card ever renders its real contents */}
+                    <div className="face face-back grid place-items-center rounded-2xl border-[2.5px] border-ink bg-card p-1 text-center">
+                      {isPicked && <span className="font-hand text-base leading-tight sm:text-lg">{g.name}</span>}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {picked && (
+            <div className="animate-pop mt-6 rounded-2xl border-[2.5px] border-ink bg-secondary/70 p-5 text-center">
+              <h3 className="text-3xl text-cherry">{picked.name}</h3>
+              {picked.customField && <p className="font-hand mt-1 text-2xl">“{wish.trim()}”</p>}
+              <p className="mt-2">{picked.message}</p>
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:justify-center">
+                {CONFIG.whatsappNumber ? (
+                  <a
+                    className="pill bg-accent px-5 py-3 text-accent-foreground"
+                    href={`https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(resultText)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Send it on WhatsApp 💬
+                  </a>
+                ) : (
+                  <PillButton
+                    variant="peach"
+                    onClick={async () => { await navigator.clipboard?.writeText(resultText).catch(() => {}); setCopied(true); }}
+                  >
+                    {copied ? "Copied! 💕" : "Copy my result 📋"}
+                  </PillButton>
+                )}
+                <PillButton onClick={onNext}>Next: cake time 🎂</PillButton>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </ScrapPage>
+  );
+}
