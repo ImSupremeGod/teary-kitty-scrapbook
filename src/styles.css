@@ -5,20 +5,13 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ * Pastel scrapbook design system: blush, lavender, cream, peach, cherry.
+ * All colors in oklch. Components use only these tokens/utilities.
  */
 
 @theme inline {
+  --font-hand: "Gaegu", "Comic Sans MS", cursive;
+  --font-sans: "Quicksand", ui-rounded, system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -46,6 +39,11 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
+  --color-cherry: var(--cherry);
+  --color-lavender: var(--lavender);
+  --color-butter: var(--butter);
+  --color-blush: var(--blush);
+  --color-ink: var(--ink);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -62,83 +60,207 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
-}
+  --radius: 1.25rem;
+  --background: oklch(0.955 0.032 350);
+  --foreground: oklch(0.33 0.07 350);
+  --card: oklch(0.99 0.014 85);
+  --card-foreground: oklch(0.33 0.07 350);
+  --popover: oklch(0.99 0.014 85);
+  --popover-foreground: oklch(0.33 0.07 350);
+  --primary: oklch(0.66 0.19 358);
+  --primary-foreground: oklch(0.99 0.01 350);
+  --secondary: oklch(0.88 0.06 305);
+  --secondary-foreground: oklch(0.33 0.09 305);
+  --muted: oklch(0.93 0.035 335);
+  --muted-foreground: oklch(0.5 0.06 345);
+  --accent: oklch(0.9 0.07 55);
+  --accent-foreground: oklch(0.38 0.08 40);
+  --destructive: oklch(0.58 0.22 22);
+  --destructive-foreground: oklch(0.99 0.01 350);
+  --border: oklch(0.84 0.07 350);
+  --input: oklch(0.86 0.06 350);
+  --ring: oklch(0.66 0.19 358);
+  --cherry: oklch(0.56 0.22 18);
+  --lavender: oklch(0.8 0.09 300);
+  --butter: oklch(0.94 0.08 95);
+  --blush: oklch(0.88 0.08 355);
+  --ink: oklch(0.3 0.05 340);
+  --chart-1: oklch(0.66 0.19 358);
+  --chart-2: oklch(0.8 0.09 300);
+  --chart-3: oklch(0.9 0.07 55);
+  --chart-4: oklch(0.94 0.08 95);
+  --chart-5: oklch(0.56 0.22 18);
+  --sidebar: oklch(0.97 0.02 350);
+  --sidebar-foreground: oklch(0.33 0.07 350);
+  --sidebar-primary: oklch(0.66 0.19 358);
+  --sidebar-primary-foreground: oklch(0.99 0.01 350);
+  --sidebar-accent: oklch(0.93 0.035 335);
+  --sidebar-accent-foreground: oklch(0.33 0.07 350);
+  --sidebar-border: oklch(0.84 0.07 350);
+  --sidebar-ring: oklch(0.66 0.19 358);
 
-.dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --gradient-dreamy: linear-gradient(160deg, oklch(0.94 0.045 350) 0%, oklch(0.92 0.05 310) 55%, oklch(0.95 0.04 50) 100%);
+  --gradient-candy: linear-gradient(135deg, var(--primary), oklch(0.72 0.15 330));
+  --gradient-drama: radial-gradient(circle at 50% 30%, oklch(0.32 0.08 330), oklch(0.18 0.04 320));
+  --shadow-sticker: 0 4px 0 oklch(0.33 0.07 350 / 0.85);
+  --shadow-soft: 0 10px 30px -12px oklch(0.55 0.15 350 / 0.45);
 }
 
 @layer base {
   * {
     border-color: var(--color-border);
   }
-
-  body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+  html {
+    overflow-x: hidden;
   }
+  body {
+    background: var(--gradient-dreamy);
+    background-attachment: fixed;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-hand);
+    font-weight: 700;
+    line-height: 1.05;
+  }
+}
+
+/* Dotted doodle paper behind everything */
+@utility paper {
+  background-image:
+    radial-gradient(oklch(0.66 0.19 358 / 0.18) 1.4px, transparent 1.6px),
+    radial-gradient(oklch(0.8 0.09 300 / 0.22) 1.4px, transparent 1.6px);
+  background-size: 26px 26px, 26px 26px;
+  background-position: 0 0, 13px 13px;
+}
+
+@utility font-hand {
+  font-family: var(--font-hand);
+}
+
+/* Scrapbook card: cream, ink outline, chunky offset shadow */
+@utility scrap-card {
+  background: var(--card);
+  border: 2.5px solid var(--ink);
+  border-radius: 1.6rem;
+  box-shadow: 5px 6px 0 var(--blush), var(--shadow-soft);
+}
+
+@utility polaroid {
+  background: var(--card);
+  padding: 0.6rem 0.6rem 2.4rem;
+  border: 2px solid var(--ink);
+  border-radius: 0.5rem;
+  box-shadow: 4px 5px 0 var(--lavender);
+}
+
+/* Washi tape strip */
+@utility tape {
+  position: absolute;
+  height: 1.4rem;
+  width: 5.5rem;
+  background: repeating-linear-gradient(45deg, oklch(0.88 0.06 305 / 0.85) 0 8px, oklch(0.95 0.03 305 / 0.85) 8px 16px);
+  border-left: 2px dashed oklch(1 0 0 / 0.6);
+  border-right: 2px dashed oklch(1 0 0 / 0.6);
+}
+
+@utility sticker {
+  filter: drop-shadow(0 3px 0 oklch(0.33 0.07 350 / 0.25));
+}
+
+@utility pill {
+  border-radius: 999px;
+  border: 2.5px solid var(--ink);
+  box-shadow: var(--shadow-sticker);
+  font-weight: 700;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  &:hover {
+    transform: translateY(-2px) rotate(-1deg);
+  }
+  &:active {
+    transform: translateY(3px) scale(0.97);
+    box-shadow: 0 1px 0 var(--ink);
+  }
+  &:focus-visible {
+    outline: 3px dashed var(--cherry);
+    outline-offset: 3px;
+  }
+  &:disabled {
+    opacity: 0.5;
+    transform: none;
+    cursor: not-allowed;
+  }
+}
+
+@utility bg-candy {
+  background: var(--gradient-candy);
+}
+@utility bg-drama {
+  background: var(--gradient-drama);
+}
+
+@keyframes float-up {
+  0% { transform: translateY(0) rotate(0); opacity: 0; }
+  10% { opacity: 0.9; }
+  100% { transform: translateY(-110vh) rotate(25deg); opacity: 0; }
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes flicker {
+  0%, 100% { transform: scaleY(1) rotate(-2deg); opacity: 1; }
+  50% { transform: scaleY(1.15) rotate(3deg); opacity: 0.85; }
+}
+@keyframes confetti-fall {
+  0% { transform: translate3d(0, -10vh, 0) rotate(0); opacity: 1; }
+  100% { transform: translate3d(var(--dx, 0), 105vh, 0) rotate(720deg); opacity: 0.7; }
+}
+@keyframes pop-in {
+  0% { transform: scale(0.6) rotate(-6deg); opacity: 0; }
+  70% { transform: scale(1.05) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); }
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+@utility animate-wiggle { animation: wiggle 1.6s ease-in-out infinite; }
+@utility animate-bob { animation: bob 2.6s ease-in-out infinite; }
+@utility animate-flicker { animation: flicker 0.5s ease-in-out infinite; transform-origin: bottom center; }
+@utility animate-pop { animation: pop-in 0.5s cubic-bezier(.2,1.4,.4,1) both; }
+@utility animate-float-heart { animation: float-up linear infinite; }
+@utility animate-confetti { animation: confetti-fall 2.4s cubic-bezier(.3,.6,.5,1) forwards; }
+@utility caret { animation: blink 0.8s steps(1) infinite; }
+
+/* Card flip */
+@utility flip-scene { perspective: 900px; }
+@utility flip-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(.3,1.3,.5,1);
+}
+@utility flipped { transform: rotateY(180deg); }
+@utility face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+@utility face-back { transform: rotateY(180deg); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .animate-float-heart, .animate-confetti { display: none; }
 }
