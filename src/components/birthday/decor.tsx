@@ -134,6 +134,6 @@ export function PillButton({
   variant = "primary",
   className,
   ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: keyof typeof btnVariants }) {
+}: React.ComponentProps<"button"> & { variant?: keyof typeof btnVariants }) {
   return <button {...props} className={cn("pill px-5 py-3 text-base", btnVariants[variant], className)} />;
 }
