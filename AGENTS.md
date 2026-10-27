@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Birthday site: all personal text and the gift catalogue live in src/lib/birthday-config.ts; lottery pool is derived from lotteryEligible in src/lib/lottery.ts (tested) so content edits never touch logic.
