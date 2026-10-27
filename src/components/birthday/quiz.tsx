@@ -38,7 +38,7 @@ const QUIZ = [
 export function Quiz({ onNext }: { onNext: () => void }) {
   const [q, setQ] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
-  const item = QUIZ[q];
+  const item = QUIZ[q]!;
   const last = q === QUIZ.length - 1;
 
   return (
