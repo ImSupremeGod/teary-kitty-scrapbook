@@ -27,7 +27,7 @@ describe("gift lottery", () => {
     const counts: Record<string, number> = {};
     const N = 50000;
     for (let i = 0; i < N; i++) {
-      const id = shuffle(eligibleGifts())[0].id;
+      const id = shuffle(eligibleGifts())[0]!.id;
       counts[id] = (counts[id] ?? 0) + 1;
     }
     for (const c of Object.values(counts)) expect(Math.abs(c / N - 0.25)).toBeLessThan(0.015);

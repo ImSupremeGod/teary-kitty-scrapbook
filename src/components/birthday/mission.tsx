@@ -19,7 +19,7 @@ export function Mission({ onNext }: { onNext: () => void }) {
   // Typewriter
   useEffect(() => {
     if (done) return;
-    const line = LINES[lineIdx];
+    const line = LINES[lineIdx] ?? "";
     if (chars < line.length) {
       const t = setTimeout(() => setChars((c) => c + 1), 28);
       return () => clearTimeout(t);
@@ -44,7 +44,7 @@ export function Mission({ onNext }: { onNext: () => void }) {
       <div className="relative rounded-2xl border-[2.5px] border-ink bg-secondary/60 p-4 text-left font-mono text-sm leading-relaxed sm:text-base">
         <Heart className="absolute -right-3 -top-3 h-8 w-8 rotate-12" />
         {LINES.slice(0, lineIdx).map((l) => <p key={l}>&gt; {l}</p>)}
-        {!done && <p>&gt; {LINES[lineIdx].slice(0, chars)}<span className="caret">▌</span></p>}
+        {!done && <p>&gt; {(LINES[lineIdx] ?? "").slice(0, chars)}<span className="caret">▌</span></p>}
       </div>
 
       <div className="mt-5">

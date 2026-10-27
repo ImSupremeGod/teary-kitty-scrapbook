@@ -33,7 +33,7 @@ export function Lottery({
 
   const pick = (i: number) => {
     if (locked) return; // no double picks
-    const id = shuffle(eligibleGifts())[0].id;
+    const id = shuffle(eligibleGifts())[0]!.id;
     const d = [...(deck ?? [])];
     d[i] = id;
     setState({ ...state, deck: d, pickedIndex: i });
