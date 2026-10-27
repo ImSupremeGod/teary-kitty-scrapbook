@@ -50,7 +50,7 @@ export function FloatingHearts({ count = 12 }: { count?: number }) {
         delay: Math.random() * 12,
         dur: 10 + Math.random() * 10,
         size: 14 + Math.random() * 16,
-        kind: kinds[i % kinds.length],
+        kind: kinds[i % kinds.length]!,
       })),
     );
   }, [count]);
@@ -79,7 +79,7 @@ export function Confetti({ fire }: { fire: number }) {
       dx: `${(Math.random() - 0.5) * 40}vw`,
       delay: Math.random() * 0.4,
       size: 16 + Math.random() * 18,
-      kind: kinds[i % kinds.length],
+      kind: kinds[i % kinds.length]!,
     }));
   }, [fire]);
   if (!fire) return null;

@@ -7,15 +7,15 @@ describe("gift lottery", () => {
     expect(GIFTS).toHaveLength(9);
   });
 
-  it("pool contains exactly the five eligible gifts", () => {
+  it("pool contains exactly the four eligible gifts", () => {
     expect(eligibleGifts().map((g) => g.id).sort()).toEqual(
-      ["custom_gift", "date", "massage", "mystery_0120_a", "mystery_0120_b"].sort(),
+      ["date", "massage", "mystery_0120_a", "mystery_0120_b"].sort(),
     );
   });
 
   it("display-only gifts can never be drawn", () => {
     const ids = eligibleGifts().map((g) => g.id);
-    for (const id of ["phone", "dance_video", "makeup_set", "book_set"]) expect(ids).not.toContain(id);
+    for (const id of ["phone", "dance_video", "makeup_set", "book_set", "custom_gift"]) expect(ids).not.toContain(id);
   });
 
   it("shuffle keeps the same five entries", () => {
@@ -27,9 +27,9 @@ describe("gift lottery", () => {
     const counts: Record<string, number> = {};
     const N = 50000;
     for (let i = 0; i < N; i++) {
-      const id = shuffle(eligibleGifts())[0].id;
+      const id = shuffle(eligibleGifts())[0]!.id;
       counts[id] = (counts[id] ?? 0) + 1;
     }
-    for (const c of Object.values(counts)) expect(Math.abs(c / N - 0.2)).toBeLessThan(0.015);
+    for (const c of Object.values(counts)) expect(Math.abs(c / N - 0.25)).toBeLessThan(0.015);
   });
 });

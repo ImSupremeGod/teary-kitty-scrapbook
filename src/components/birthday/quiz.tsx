@@ -38,7 +38,7 @@ const QUIZ = [
 export function Quiz({ onNext }: { onNext: () => void }) {
   const [q, setQ] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
-  const item = QUIZ[q];
+  const item = QUIZ[q]!;
   const last = q === QUIZ.length - 1;
 
   return (
@@ -69,7 +69,7 @@ export function Quiz({ onNext }: { onNext: () => void }) {
 
       {picked !== null && (
         <div className="animate-pop mt-5 rounded-2xl border-[2.5px] border-dashed border-primary bg-muted p-4 text-center" aria-live="polite">
-          <p className="font-hand text-2xl">{item.answers[picked].reaction}</p>
+          <p className="font-hand text-2xl">{item.answers[picked]?.reaction}</p>
           <p className="mt-1 text-sm font-bold text-cherry">✔ {item.response}</p>
           <PillButton
             className="mt-4"

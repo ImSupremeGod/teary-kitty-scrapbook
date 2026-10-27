@@ -25,15 +25,18 @@ export function Lottery({
   const picked = deck && pickedIndex !== null ? GIFTS.find((g) => g.id === deck[pickedIndex]) : null;
 
   const startDraw = () => {
-    if (!wish.trim()) { setError("Write your dream gift first, birthday girl 🎁"); return; }
     setError("");
     play("flip");
-    setState({ ...state, deck: shuffle(eligibleGifts()).map((g) => g.id) });
+    // All nine cards look identical; contents are decided only when she taps.
+    setState({ ...state, deck: GIFTS.map(() => "") });
   };
 
   const pick = (i: number) => {
     if (locked) return; // no double picks
-    setState({ ...state, pickedIndex: i });
+    const id = shuffle(eligibleGifts())[0]!.id;
+    const d = [...(deck ?? [])];
+    d[i] = id;
+    setState({ ...state, deck: d, pickedIndex: i });
     play("yay");
     setTimeout(onConfetti, 500);
   };
@@ -55,7 +58,7 @@ export function Lottery({
             key={g.id}
             className={cn(
               "relative rounded-2xl border-[2.5px] border-ink p-3",
-              g.lotteryEligible ? "bg-muted" : "bg-card",
+              "bg-card",
               i % 2 ? "rotate-[0.6deg]" : "-rotate-[0.6deg]",
               g.customField && "sm:col-span-2",
             )}
@@ -63,10 +66,10 @@ export function Lottery({
             <span
               className={cn(
                 "absolute -top-3 right-3 rounded-full border-2 border-ink px-2 text-xs font-bold",
-                g.lotteryEligible ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground",
+                "bg-primary text-primary-foreground",
               )}
             >
-              {g.lotteryEligible ? "🎟 in the lottery" : "👀 display only"}
+              🎟 in the lottery
             </span>
             <h3 className="text-2xl">{g.name}</h3>
             <p className="text-sm text-muted-foreground">{g.description}</p>
@@ -94,7 +97,7 @@ export function Lottery({
 
       {!deck && (
         <div className="mt-6 text-center">
-          <p className="text-sm">Only the 5 🎟 gifts go into the draw. Each has the exact same chance. Pick one blind card. No take-backs. 😌</p>
+          <p className="text-sm">All 9 gifts are in the draw. Pick one blind card. No take-backs. 😌</p>
           {error && <p className="mt-2 font-bold text-destructive" role="alert">{error}</p>}
           <PillButton className="mt-4 text-lg" onClick={startDraw}>SHUFFLE MY DESTINY 💗</PillButton>
         </div>
@@ -105,14 +108,14 @@ export function Lottery({
           <p className="font-hand mb-4 text-center text-2xl">{locked ? "Destiny has spoken ✨" : "Tap ONE card. Choose wisely, princess."}</p>
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
             {deck.map((id, i) => {
-              const g = GIFTS.find((x) => x.id === id)!;
+              const g = GIFTS.find((x) => x.id === id);
               const isPicked = pickedIndex === i;
               return (
                 <button
                   key={i}
                   disabled={locked}
                   onClick={() => pick(i)}
-                  aria-label={isPicked ? `Your gift: ${g.name}` : `Mystery card ${i + 1}`}
+                  aria-label={isPicked && g ? `Your gift: ${g.name}` : `Mystery card ${i + 1}`}
                   className={cn("flip-scene aspect-[3/4] w-full rounded-2xl focus-visible:outline-dashed focus-visible:outline-3 focus-visible:outline-cherry", locked && !isPicked && "opacity-40")}
                 >
                   <div className={cn("flip-inner h-full w-full", isPicked && "flipped")}>
@@ -123,7 +126,7 @@ export function Lottery({
                     </div>
                     {/* Only the picked card ever renders its real contents */}
                     <div className="face face-back grid place-items-center rounded-2xl border-[2.5px] border-ink bg-card p-1 text-center">
-                      {isPicked && <span className="font-hand text-base leading-tight sm:text-lg">{g.name}</span>}
+                      {isPicked && g && <span className="font-hand text-base leading-tight sm:text-lg">{g.name}</span>}
                     </div>
                   </div>
                 </button>
@@ -134,7 +137,7 @@ export function Lottery({
           {picked && (
             <div className="animate-pop mt-6 rounded-2xl border-[2.5px] border-ink bg-secondary/70 p-5 text-center">
               <h3 className="text-3xl text-cherry">{picked.name}</h3>
-              {picked.customField && <p className="font-hand mt-1 text-2xl">“{wish.trim()}”</p>}
+              
               <p className="mt-2">{picked.message}</p>
               <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:justify-center">
                 {CONFIG.whatsappNumber ? (

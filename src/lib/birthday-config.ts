@@ -84,7 +84,7 @@ export const GIFTS: Gift[] = [
     id: "custom_gift",
     name: "Your Own Wish 🎀",
     description: "Write any gift you want in the blank field.",
-    lotteryEligible: true,
+    lotteryEligible: false,
     customField: true,
     message: "YOUR WISH HAS BEEN UNLOCKED 🎀 The birthday gift department is both excited and slightly nervous.",
   },
