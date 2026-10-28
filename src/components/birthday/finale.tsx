@@ -18,11 +18,21 @@ export function Finale({ onReplay, onConfetti }: { onReplay: () => void; onConfe
         <PillButton variant="lavender" onClick={() => { setShown("secret"); play("flip"); }}>A SECRET MESSAGE 💌</PillButton>
         <PillButton onClick={() => { setShown("risky"); play("yay"); onConfetti(); }}>PRESS AT YOUR OWN RISK 😏</PillButton>
       </div>
-      {shown && (
+      {shown === "secret" ? (
+        <div key={shown} className="animate-pop mt-5 rounded-2xl border-[2.5px] border-dashed border-primary bg-muted p-4" aria-live="polite">
+          <p className="font-hand text-center text-3xl text-primary">{CONFIG.finale.secretTitle}</p>
+          <div className="mt-3 max-h-80 space-y-4 overflow-y-auto pr-2 text-left font-hand text-xl leading-relaxed sm:text-2xl">
+            {CONFIG.finale.secret.split("\n\n").map((para, i) => (
+              <p key={i}>{para}</p>
+            ))}
+          </div>
+          <p className="mt-4 text-center text-lg text-muted-foreground">— Shanu 🎀</p>
+        </div>
+      ) : shown ? (
         <p key={shown} className="animate-pop font-hand mt-5 rounded-2xl border-[2.5px] border-dashed border-primary bg-muted p-4 text-center text-2xl" aria-live="polite">
           {text}
         </p>
-      )}
+      ) : null}
 
       <div className="relative mt-8 rounded-3xl border-[2.5px] border-ink bg-candy p-6 text-center text-primary-foreground">
         <Bow className="absolute -top-5 left-1/2 h-10 w-14 -translate-x-1/2" />

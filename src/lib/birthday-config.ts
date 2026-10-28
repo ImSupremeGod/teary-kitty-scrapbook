@@ -43,8 +43,15 @@ export const CONFIG = {
     { id: "flirty", title: "A Little Trouble 😏", body: "[EDITABLE_PERSONAL_MESSAGE_3]" },
   ],
   finale: {
-    joke: "SYSTEM ALERT 🤡: Birthday girl is now 1 year older. Cuteness, however, refuses to age. Bug report filed. Developer says: won't fix.",
-    secret: "[SHORT_WARM_SECRET_MESSAGE]",
+    joke: "You can't keep looking that good and expect me to have respectable thoughts.",
+    secretTitle: "Pssst, Anusha 💕",
+    secret: `Sometimes I genuinely wonder how one person can be this beautiful and still have no idea what she's doing to my heart. You give me butterflies, make me lose my mind, fill me with a warmth I can't explain, and give me thoughts that are definitely not always innocent. Sometimes I just want to pull you closer, kiss you until I forget the world exists, and then hold you quietly like that's the only place I belong. ❤️‍🔥
+
+But you know what? Beyond all the beauty that catches my eyes, there's a girl I genuinely wish life would be a little gentler with. I hope you never feel like you have to hide your tiredness behind a smile or pretend you're okay when there's a lot going on inside you. I wish you had someone who'd listen even when you don't know how to explain what you're feeling, sit with you through your quiet moments, and remind you that you don't have to figure everything out all at once. You don't always have to be strong, you know? You deserve to have someone who cares about the little things that affect you, even the ones you think nobody notices.
+
+And God, I wish you could borrow my eyes for just a moment and see yourself the way I see you. Maybe then you'd understand why your smile can make my entire day better, why even the smallest things about you stay in my mind, and why I find you beautiful in ways that have nothing to do with your face. You've somehow become this strange mix of peace and chaos for me, someone I want to kiss senselessly one moment and protect from every little hurt the next. ❤️
+
+More than anything, I hope life gives you the happiness you secretly wish for, the peace your mind sometimes needs, and the affection you shouldn't have to ask for. I wish I could be there to make you laugh when things get heavy, hold you when words aren't enough, and remind you of your worth on the days you forget it. I can't promise to make life perfect for you, but I hope you never have to question whether you deserve kindness, care, and a little extra love. And if you ever forget how special you are, just come a little closer. I'd happily spend hours reminding you. ❤️‍🩹`,
     risky: "You pressed it. Brave. Here's your surprise: one free hug coupon, valid whenever you want it, no expiry date. 😏🎀",
     developerSecret: "[DEVELOPER_SECRET_MESSAGE]",
   },
