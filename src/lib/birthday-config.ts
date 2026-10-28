@@ -38,9 +38,21 @@ export const CONFIG = {
     },
   ],
   messages: [
-    { id: "playful_affection", title: "The Funny Truth 💕", body: "[EDITABLE_PERSONAL_MESSAGE_1]" },
-    { id: "heartfelt", title: "Something Real 🥺", body: "[EDITABLE_PERSONAL_MESSAGE_2]" },
-    { id: "flirty", title: "A Little Trouble 😏", body: "[EDITABLE_PERSONAL_MESSAGE_3]" },
+    {
+      id: "playful_affection",
+      title: "The Funny Truth 💕",
+      body: "I have a feeling you argue even when you know you're wrong, just because admitting defeat would hurt your ego. 😂 And somehow, I can already imagine you reading this, disagreeing with me, and proving my point. Please don't disappoint me. 😭",
+    },
+    {
+      id: "heartfelt",
+      title: "Something Real 🥺",
+      body: "I hope you never feel you have to be happy all the time to be loved, or pretend to have everything figured out. You can have bad days, change your mind, overthink the smallest things, and still be someone worth staying for. You're allowed to take your time, change your mind, make mistakes, and start over. You don't have to be perfect to be precious to someone.",
+    },
+    {
+      id: "flirty",
+      title: "A Little Trouble 😏",
+      body: "Be honest, how many times have you read a message, smiled at your screen, and then replied like the most innocent person on Earth? 😂 I feel like you could cause chaos and still somehow convince everyone you're the victim. 😭❤️",
+    },
   ],
   finale: {
     joke: "You can't keep looking that good and expect me to have respectable thoughts.",
