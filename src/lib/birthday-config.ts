@@ -90,16 +90,16 @@ export const GIFTS: Gift[] = [
   },
   {
     id: "mystery_0120_a",
-    name: "Mystery Gift 0120 🎭",
-    description: "First mystery gift; details to be decided.",
+    name: "Me 🫶",
+    description: "The rarest gift of all: me, all yours.",
     lotteryEligible: true,
-    message: "MYSTERY UNLOCKED! 🎭 The suspense is part of the gift, you little detective.",
+    message: "JACKPOT! 🫶 You won... me. No returns, no refunds, lifetime warranty.",
   },
   {
     id: "mystery_0120_b",
-    name: "Mystery Gift 0120 🎲",
-    description: "Second, separate mystery gift; details to be decided.",
+    name: "You Owe Me A Kissy 💋",
+    description: "Plot twist: this one's a debt. You owe me a kissy.",
     lotteryEligible: true,
-    message: "DOUBLE MYSTERY ENERGY 🎲 Apparently, one surprise was not enough.",
+    message: "UH OH 💋 You owe me a kissy. Payment due immediately. No excuses, birthday girl.",
   },
 ];

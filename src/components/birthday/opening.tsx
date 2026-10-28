@@ -58,7 +58,8 @@ export function Opening({ onYes }: { onYes: () => void }) {
         <h1 className="mt-2 text-5xl text-cherry">Pssst... Birthday Girl 🎀</h1>
         <p className="mt-3 text-lg">Do you want to see your birthday surprises? 🥺👉👈</p>
         <div className="mt-7 flex flex-col items-center gap-3">
-          <PillButton className="w-full text-lg" onClick={() => { play("yay"); onYes(); }}>YESSS, SHOW ME!! 💗</PillButton>
+          <PillButton variant="peach" className="w-full" onClick={() => play("song")}>🎵 Play your birthday song</PillButton>
+          <PillButton className="w-full text-lg" onClick={() => { play("song"); onYes(); }}>YESSS, SHOW ME!! 💗</PillButton>
           <div className="grid w-full grid-cols-2 gap-3">
             <PillButton variant="cream" onClick={() => { play("sad"); setSad(true); }}>NO 🙄</PillButton>
             <PillButton
