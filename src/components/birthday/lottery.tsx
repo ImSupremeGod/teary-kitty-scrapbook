@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { CONFIG, GIFTS } from "@/lib/birthday-config";
 import { eligibleGifts, shuffle } from "@/lib/lottery";
 import { Bow, PillButton, ScrapPage, SceneTitle } from "./decor";
@@ -20,6 +20,7 @@ export function Lottery({
 }) {
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState("");
+  const [scratched, setScratched] = useState(false);
   const { wish, deck, pickedIndex } = state;
   const locked = pickedIndex !== null;
   const picked = deck && pickedIndex !== null ? GIFTS.find((g) => g.id === deck[pickedIndex]) : null;
@@ -71,13 +72,8 @@ export function Lottery({
             >
               🎟 in the lottery
             </span>
-            <h3 className="text-2xl">{g.name}</h3>
+            <h3 className="text-2xl">{g.mysteryLabel ?? g.name}</h3>
             <p className="text-sm text-muted-foreground">{g.description}</p>
-            {g.id === "date" && (
-              <p className="mt-1 text-xs text-muted-foreground">
-                Where: {CONFIG.date.location} · What: {CONFIG.date.activity} — you pick, I plan. Zero pressure. 💗
-              </p>
-            )}
             {g.customField && (
               <label className="mt-2 block">
                 <span className="font-hand text-xl">Tell me your dream gift, birthday girl 🎁</span>
@@ -115,7 +111,7 @@ export function Lottery({
                   key={i}
                   disabled={locked}
                   onClick={() => pick(i)}
-                  aria-label={isPicked && g ? `Your gift: ${g.name}` : `Mystery card ${i + 1}`}
+                  aria-label={isPicked && g ? `Your gift: ${g.mysteryLabel ?? g.name}` : `Mystery card ${i + 1}`}
                   className={cn("flip-scene aspect-[3/4] w-full rounded-2xl focus-visible:outline-dashed focus-visible:outline-3 focus-visible:outline-cherry", locked && !isPicked && "opacity-40")}
                 >
                   <div className={cn("flip-inner h-full w-full", isPicked && "flipped")}>
@@ -126,7 +122,7 @@ export function Lottery({
                     </div>
                     {/* Only the picked card ever renders its real contents */}
                     <div className="face face-back grid place-items-center rounded-2xl border-[2.5px] border-ink bg-card p-1 text-center">
-                      {isPicked && g && <span className="font-hand text-base leading-tight sm:text-lg">{g.name}</span>}
+                      {isPicked && g && <span className="font-hand text-base leading-tight sm:text-lg">{g.mysteryLabel ?? g.name}</span>}
                     </div>
                   </div>
                 </button>
@@ -136,10 +132,21 @@ export function Lottery({
 
           {picked && (
             <div className="animate-pop mt-6 rounded-2xl border-[2.5px] border-ink bg-secondary/70 p-5 text-center">
-              <h3 className="text-3xl text-cherry">{picked.name}</h3>
-              
-              <p className="mt-2">{picked.message}</p>
-              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:justify-center">
+              {picked.mysteryLabel && !scratched ? (
+                <>
+                  <h3 className="text-3xl text-cherry">{picked.mysteryLabel}</h3>
+                  <p className="font-hand mt-1 text-xl">Scratch it with your finger, princess 👇</p>
+                  <ScratchCard onDone={() => { setScratched(true); play("yay"); onConfetti(); }}>
+                    <span className="font-hand text-3xl text-cherry">{picked.name}</span>
+                  </ScratchCard>
+                </>
+              ) : (
+                <>
+                  <h3 className="text-3xl text-cherry">{picked.name}</h3>
+                  <p className="mt-2">{picked.message}</p>
+                </>
+              )}
+              {(!picked.mysteryLabel || scratched) && <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:justify-center">
                 {CONFIG.whatsappNumber ? (
                   <a
                     className="pill bg-accent px-5 py-3 text-accent-foreground"
@@ -158,11 +165,50 @@ export function Lottery({
                   </PillButton>
                 )}
                 <PillButton onClick={onNext}>Next: cake time 🎂</PillButton>
-              </div>
+              </div>}
             </div>
           )}
         </div>
       )}
     </ScrapPage>
+  );
+}
+
+function ScratchCard({ children, onDone }: { children: ReactNode; onDone: () => void }) {
+  const ref = useRef<HTMLCanvasElement>(null);
+  const drawing = useRef(false);
+  const finished = useRef(false);
+  useEffect(() => {
+    const c = ref.current!;
+    const ctx = c.getContext("2d")!;
+    c.width = c.offsetWidth; c.height = c.offsetHeight;
+    const g = ctx.createLinearGradient(0, 0, c.width, c.height);
+    g.addColorStop(0, "#f9a8d4"); g.addColorStop(1, "#c4b5fd");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, c.width, c.height);
+    ctx.fillStyle = "#fff"; ctx.font = "bold 20px sans-serif"; ctx.textAlign = "center";
+    ctx.fillText("✨ SCRATCH ME ✨", c.width / 2, c.height / 2 + 7);
+  }, []);
+  const scratch = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!drawing.current || finished.current) return;
+    const c = ref.current!; const ctx = c.getContext("2d")!;
+    const r = c.getBoundingClientRect();
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.beginPath(); ctx.arc(e.clientX - r.left, e.clientY - r.top, 22, 0, Math.PI * 2); ctx.fill();
+    const d = ctx.getImageData(0, 0, c.width, c.height).data;
+    let clear = 0; for (let i = 3; i < d.length; i += 32) if (d[i] === 0) clear++;
+    if (clear / (d.length / 32) > 0.5) { finished.current = true; c.style.opacity = "0"; onDone(); }
+  };
+  return (
+    <div className="relative mx-auto mt-3 grid h-28 w-full max-w-xs place-items-center rounded-2xl border-[2.5px] border-ink bg-card">
+      {children}
+      <canvas
+        ref={ref}
+        aria-label="Scratch card"
+        className="absolute inset-0 h-full w-full touch-none rounded-2xl transition-opacity duration-500"
+        onPointerDown={(e) => { drawing.current = true; e.currentTarget.setPointerCapture(e.pointerId); scratch(e); }}
+        onPointerMove={scratch}
+        onPointerUp={() => { drawing.current = false; }}
+      />
+    </div>
   );
 }

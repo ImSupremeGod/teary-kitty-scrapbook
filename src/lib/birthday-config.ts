@@ -3,9 +3,9 @@
  * Values in [BRACKETS] are placeholders that must be replaced before sharing.
  */
 export const CONFIG = {
-  recipientName: "[HER_NAME_OR_NICKNAME]",
+  recipientName: "Anusha",
   birthday: "[BIRTHDAY_DATE]",
-  creatorName: "[YOUR_NAME_OR_NICKNAME]",
+  creatorName: "Shanu",
   /** Optional, e.g. "919876543210". Leave empty to show a Copy button instead. */
   whatsappNumber: "",
   insideJokes: ["[INSIDE_JOKE_1]", "[INSIDE_JOKE_2]", "[INSIDE_JOKE_3]"],
@@ -56,6 +56,8 @@ export type Gift = {
   description: string;
   lotteryEligible: boolean;
   customField?: boolean;
+  /** Hidden behind a scratch card; catalogue shows mysteryLabel instead of name. */
+  mysteryLabel?: string;
   message?: string;
 };
 
@@ -91,14 +93,16 @@ export const GIFTS: Gift[] = [
   {
     id: "mystery_0120_a",
     name: "Me 🫶",
-    description: "The rarest gift of all: me, all yours.",
+    mysteryLabel: "Mystery Gift #1 🎁",
+    description: "Scratch to find out. 👀",
     lotteryEligible: true,
     message: "JACKPOT! 🫶 You won... me. No returns, no refunds, lifetime warranty.",
   },
   {
     id: "mystery_0120_b",
     name: "You Owe Me A Kissy 💋",
-    description: "Plot twist: this one's a debt. You owe me a kissy.",
+    mysteryLabel: "Mystery Gift #2 🎁",
+    description: "Scratch to find out. 👀",
     lotteryEligible: true,
     message: "UH OH 💋 You owe me a kissy. Payment due immediately. No excuses, birthday girl.",
   },
