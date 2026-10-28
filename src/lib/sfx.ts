@@ -3,12 +3,12 @@
  * (public/audio/birthday-meme-1..3.mp3). If a file is missing, falls back to
  * a soft synthesized chirp. Never autoplays; only call from user interactions.
  */
-type Sfx = "pop" | "yay" | "sad" | "flip" | "blow";
+import birthdaySong from "@/assets/birthday-song.mp3.asset.json";
+
+type Sfx = "pop" | "yay" | "sad" | "flip" | "blow" | "song";
 
 const FILES: Partial<Record<Sfx, string>> = {
-  yay: "/audio/birthday-meme-1.mp3",
-  sad: "/audio/birthday-meme-2.mp3",
-  blow: "/audio/birthday-meme-3.mp3",
+  song: birthdaySong.url,
 };
 
 let muted = false;
@@ -28,7 +28,7 @@ function chirp(kind: Sfx) {
   try {
     ctx ??= new AudioContext();
     const notes: Record<Sfx, number[]> = {
-      pop: [880], flip: [660, 990], yay: [523, 659, 784, 1046], sad: [440, 370, 311], blow: [300, 200],
+      pop: [880], flip: [660, 990], yay: [523, 659, 784, 1046], sad: [440, 370, 311], blow: [300, 200], song: [523, 659, 784],
     };
     notes[kind].forEach((f, i) => {
       const o = ctx!.createOscillator();
