@@ -1,8 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import catGift from "@/assets/cat-gift.png";
 import cryingCat from "@/assets/crying-cat.gif.asset.json";
 import { Bow, Heart, PillButton, Star } from "./decor";
-import { play } from "@/lib/sfx";
+import { play, playSong } from "@/lib/sfx";
 
 const MAX_DODGES = 4;
 
@@ -12,6 +12,16 @@ export function Opening({ onYes }: { onYes: () => void }) {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [maybeMsg, setMaybeMsg] = useState("");
   const btnRef = useRef<HTMLButtonElement>(null);
+
+  // Autoplay the song; if the browser blocks it, start on her first tap/key.
+  useEffect(() => {
+    let done = false;
+    const start = () => { if (done) return; playSong().then((ok) => { if (ok) { done = true; cleanup(); } }); };
+    const cleanup = () => ["pointerdown", "keydown", "touchstart"].forEach((e) => window.removeEventListener(e, start));
+    ["pointerdown", "keydown", "touchstart"].forEach((e) => window.addEventListener(e, start));
+    start();
+    return cleanup;
+  }, []);
 
   const dodge = () => {
     if (dodges >= MAX_DODGES || !btnRef.current) return false;
@@ -58,8 +68,7 @@ export function Opening({ onYes }: { onYes: () => void }) {
         <h1 className="mt-2 text-5xl text-cherry">Pssst... Birthday Girl 🎀</h1>
         <p className="mt-3 text-lg">Do you want to see your birthday surprises? 🥺👉👈</p>
         <div className="mt-7 flex flex-col items-center gap-3">
-          <PillButton variant="peach" className="w-full" onClick={() => play("song")}>🎵 Play your birthday song</PillButton>
-          <PillButton className="w-full text-lg" onClick={() => { play("song"); onYes(); }}>YESSS, SHOW ME!! 💗</PillButton>
+          <PillButton className="w-full text-lg" onClick={() => { playSong(); onYes(); }}>YESSS, SHOW ME!! 💗</PillButton>
           <div className="grid w-full grid-cols-2 gap-3">
             <PillButton variant="cream" onClick={() => { play("sad"); setSad(true); }}>NO 🙄</PillButton>
             <PillButton

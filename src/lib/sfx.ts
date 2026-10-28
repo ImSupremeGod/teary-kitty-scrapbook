@@ -59,3 +59,13 @@ export function play(kind: Sfx) {
   a.play().catch(() => { missing.add(file); chirp(kind); });
   a.onerror = () => { missing.add(file); };
 }
+
+/** Try to start the birthday song; resolves false if the browser blocked autoplay. */
+export function playSong(): Promise<boolean> {
+  if (muted || typeof window === "undefined") return Promise.resolve(false);
+  if (current && !current.paused) return Promise.resolve(true);
+  const a = new Audio(birthdaySong.url);
+  a.volume = volume;
+  current = a;
+  return a.play().then(() => true, () => false);
+}
