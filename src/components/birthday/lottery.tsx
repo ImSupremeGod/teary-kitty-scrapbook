@@ -4,8 +4,9 @@ import { eligibleGifts, shuffle } from "@/lib/lottery";
 import { Bow, PillButton, ScrapPage, SceneTitle } from "./decor";
 import { play } from "@/lib/sfx";
 import { cn } from "@/lib/utils";
+import type { LotteryState } from "@/lib/birthday-progress";
 
-export type LotteryState = { wish: string; deck: string[] | null; pickedIndex: number | null };
+export type { LotteryState } from "@/lib/birthday-progress";
 
 export function Lottery({
   state,
@@ -20,7 +21,10 @@ export function Lottery({
 }) {
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState("");
-  const [scratched, setScratched] = useState(false);
+  const scratched = state.scratched === true;
+  const picking = useRef(false);
+  const confettiTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (confettiTimer.current) clearTimeout(confettiTimer.current); }, []);
   const { wish, deck, pickedIndex } = state;
   const locked = pickedIndex !== null;
   const picked = deck && pickedIndex !== null ? GIFTS.find((g) => g.id === deck[pickedIndex]) : null;
@@ -33,13 +37,16 @@ export function Lottery({
   };
 
   const pick = (i: number) => {
-    if (locked) return; // no double picks
-    const id = shuffle(eligibleGifts())[0]!.id;
+    if (locked || picking.current || !deck) return; // no double picks
+    const gift = shuffle(eligibleGifts())[0];
+    if (!gift) return;
+    picking.current = true;
+    const id = gift.id;
     const d = [...(deck ?? [])];
     d[i] = id;
     setState({ ...state, deck: d, pickedIndex: i });
     play("yay");
-    setTimeout(onConfetti, 500);
+    confettiTimer.current = setTimeout(onConfetti, 500);
   };
 
   const resultText = picked
@@ -136,7 +143,7 @@ export function Lottery({
                 <>
                   <h3 className="text-3xl text-cherry">{picked.mysteryLabel}</h3>
                   <p className="font-hand mt-1 text-xl">Scratch it with your finger, princess 👇</p>
-                  <ScratchCard onDone={() => { setScratched(true); play("yay"); onConfetti(); }}>
+                  <ScratchCard onDone={() => { setState({ ...state, scratched: true }); play("yay"); onConfetti(); }}>
                     <span className="font-hand text-3xl text-cherry">{picked.name}</span>
                   </ScratchCard>
                 </>
@@ -159,13 +166,24 @@ export function Lottery({
                 ) : (
                   <PillButton
                     variant="peach"
-                    onClick={async () => { await navigator.clipboard?.writeText(resultText).catch(() => {}); setCopied(true); }}
+                    onClick={async () => {
+                      setError("");
+                      try {
+                        if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
+                        await navigator.clipboard.writeText(resultText);
+                        setCopied(true);
+                      } catch {
+                        setCopied(false);
+                        setError("Couldn't copy this time. You can select your result below. 💌");
+                      }
+                    }}
                   >
                     {copied ? "Copied! 💕" : "Copy my result 📋"}
                   </PillButton>
                 )}
                 <PillButton onClick={onNext}>Next: cake time 🎂</PillButton>
               </div>}
+              {error && <div className="mt-3" role="alert"><p>{error}</p><p className="mt-2 select-all rounded-md bg-card p-3">{resultText}</p></div>}
             </div>
           )}
         </div>
@@ -178,29 +196,38 @@ function ScratchCard({ children, onDone }: { children: ReactNode; onDone: () => 
   const ref = useRef<HTMLCanvasElement>(null);
   const drawing = useRef(false);
   const finished = useRef(false);
+  const complete = () => {
+    if (finished.current) return;
+    finished.current = true;
+    onDone();
+  };
   useEffect(() => {
-    const c = ref.current!;
-    const ctx = c.getContext("2d")!;
+    const c = ref.current;
+    const ctx = c?.getContext("2d");
+    if (!c || !ctx) return;
     c.width = c.offsetWidth; c.height = c.offsetHeight;
+    const tokens = getComputedStyle(c);
     const g = ctx.createLinearGradient(0, 0, c.width, c.height);
-    g.addColorStop(0, "#f9a8d4"); g.addColorStop(1, "#c4b5fd");
+    g.addColorStop(0, tokens.getPropertyValue("--blush").trim()); g.addColorStop(1, tokens.getPropertyValue("--lavender").trim());
     ctx.fillStyle = g; ctx.fillRect(0, 0, c.width, c.height);
-    ctx.fillStyle = "#fff"; ctx.font = "bold 20px sans-serif"; ctx.textAlign = "center";
+    ctx.fillStyle = tokens.getPropertyValue("--ink").trim(); ctx.font = "bold 20px sans-serif"; ctx.textAlign = "center";
     ctx.fillText("✨ SCRATCH ME ✨", c.width / 2, c.height / 2 + 7);
   }, []);
   const scratch = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!drawing.current || finished.current) return;
-    const c = ref.current!; const ctx = c.getContext("2d")!;
+    const c = ref.current; const ctx = c?.getContext("2d");
+    if (!c || !ctx) return;
     const r = c.getBoundingClientRect();
     ctx.globalCompositeOperation = "destination-out";
-    ctx.beginPath(); ctx.arc(e.clientX - r.left, e.clientY - r.top, 22, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc((e.clientX - r.left) * c.width / r.width, (e.clientY - r.top) * c.height / r.height, 22, 0, Math.PI * 2); ctx.fill();
     const d = ctx.getImageData(0, 0, c.width, c.height).data;
     let clear = 0; for (let i = 3; i < d.length; i += 32) if (d[i] === 0) clear++;
-    if (clear / (d.length / 32) > 0.5) { finished.current = true; c.style.opacity = "0"; onDone(); }
+    if (clear / (d.length / 32) > 0.5) complete();
   };
   return (
+    <>
     <div className="relative mx-auto mt-3 grid h-28 w-full max-w-xs place-items-center rounded-2xl border-[2.5px] border-ink bg-card">
-      {children}
+      <div aria-hidden="true">{children}</div>
       <canvas
         ref={ref}
         aria-label="Scratch card"
@@ -208,7 +235,11 @@ function ScratchCard({ children, onDone }: { children: ReactNode; onDone: () => 
         onPointerDown={(e) => { drawing.current = true; e.currentTarget.setPointerCapture(e.pointerId); scratch(e); }}
         onPointerMove={scratch}
         onPointerUp={() => { drawing.current = false; }}
+        onPointerCancel={() => { drawing.current = false; }}
+        onLostPointerCapture={() => { drawing.current = false; }}
       />
     </div>
+    <PillButton variant="cream" className="mt-3" onClick={complete}>Reveal my surprise ✨</PillButton>
+    </>
   );
 }

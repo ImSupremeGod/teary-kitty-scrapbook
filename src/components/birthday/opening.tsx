@@ -3,6 +3,7 @@ import catGift from "@/assets/cat-gift.png";
 import cryingCat from "@/assets/crying-cat.gif.asset.json";
 import { Bow, Heart, PillButton, Star } from "./decor";
 import { play, playSong } from "@/lib/sfx";
+import { CONFIG } from "@/lib/birthday-config";
 
 const MAX_DODGES = 4;
 
@@ -12,6 +13,10 @@ export function Opening({ onYes }: { onYes: () => void }) {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [maybeMsg, setMaybeMsg] = useState("");
   const btnRef = useRef<HTMLButtonElement>(null);
+  const navigating = useRef(false);
+  const delayRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (delayRef.current) clearTimeout(delayRef.current); }, []);
+  const proceed = () => { if (navigating.current) return; navigating.current = true; onYes(); };
 
   // Autoplay the song; if the browser blocks it, start on her first tap/key.
   useEffect(() => {
@@ -51,7 +56,7 @@ export function Opening({ onYes }: { onYes: () => void }) {
           I made all this cuteness and you said NO?! The cat is crying. I am crying. Even the HTML is crying. 😭💔
         </p>
         <div className="mt-6 flex w-full flex-col gap-3 sm:flex-row sm:justify-center">
-          <PillButton onClick={() => { play("yay"); onYes(); }}>OKAY FINE, SHOW ME 💗</PillButton>
+          <PillButton onClick={() => { play("yay"); proceed(); }}>OKAY FINE, SHOW ME 💗</PillButton>
           <PillButton variant="cream" onClick={() => setSad(false)}>GO BACK</PillButton>
         </div>
       </div>
@@ -65,10 +70,10 @@ export function Opening({ onYes }: { onYes: () => void }) {
       <Heart className="absolute -bottom-4 right-6 h-8 w-8 animate-bob" />
       <div className="scrap-card animate-pop px-5 py-8">
         <img src={catGift} alt="Cute cat sticker holding a birthday gift" width={816} height={816} className="sticker mx-auto h-44 w-44 animate-bob" />
-        <h1 className="mt-2 text-5xl text-cherry">Pssst... Birthday Girl 🎀</h1>
+        <h1 className="mt-2 text-5xl text-cherry">Pssst... {CONFIG.recipientName} 🎀</h1>
         <p className="mt-3 text-lg">Do you want to see your birthday surprises? 🥺👉👈</p>
         <div className="mt-7 flex flex-col items-center gap-3">
-          <PillButton className="w-full text-lg" onClick={() => { playSong(); onYes(); }}>YESSS, SHOW ME!! 💗</PillButton>
+          <PillButton className="w-full text-lg" onClick={() => { void playSong(); proceed(); }}>YESSS, SHOW ME!! 💗</PillButton>
           <div className="grid w-full grid-cols-2 gap-3">
             <PillButton variant="cream" onClick={() => { play("sad"); setSad(true); }}>NO 🙄</PillButton>
             <PillButton
@@ -78,11 +83,13 @@ export function Opening({ onYes }: { onYes: () => void }) {
               onPointerEnter={(e) => { if (e.pointerType === "mouse") dodge(); }}
               onPointerDown={(e) => { if (e.pointerType !== "mouse" && dodge()) e.preventDefault(); }}
               onClick={(e) => {
+                if (navigating.current) return;
                 // keyboard (detail === 0) is never blocked
                 if (e.detail !== 0 && dodges < MAX_DODGES) { dodge(); return; }
                 setMaybeMsg("Maybe = yes in girlie language. Let's go! 💅");
                 play("yay");
-                setTimeout(onYes, 900);
+                navigating.current = true;
+                delayRef.current = setTimeout(onYes, 900);
               }}
             >
               MAYBEEE 🤔

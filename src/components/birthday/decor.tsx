@@ -105,7 +105,7 @@ export function ScrapPage({ children, className, tag }: { children: ReactNode; c
       <span className="tape -top-3 left-6 -rotate-6" aria-hidden />
       <span className="tape -top-3 right-6 rotate-6" aria-hidden />
       {tag && (
-        <span className="font-hand absolute -top-4 left-1/2 -translate-x-1/2 rotate-[-2deg] rounded-full border-2 border-ink bg-secondary px-3 py-0.5 text-lg text-secondary-foreground">
+        <span className="font-hand absolute -top-4 left-1/2 max-w-[calc(100%-2rem)] -translate-x-1/2 rotate-[-2deg] whitespace-nowrap rounded-full border-2 border-ink bg-secondary px-3 py-0.5 text-sm text-secondary-foreground sm:text-lg">
           {tag}
         </span>
       )}
