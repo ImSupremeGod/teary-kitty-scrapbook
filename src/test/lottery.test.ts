@@ -18,7 +18,7 @@ describe("gift lottery", () => {
     for (const id of ["phone", "dance_video", "makeup_set", "book_set", "custom_gift"]) expect(ids).not.toContain(id);
   });
 
-  it("shuffle keeps the same five entries", () => {
+  it("shuffle keeps the same four entries", () => {
     const s = shuffle(eligibleGifts());
     expect(s.map((g) => g.id).sort()).toEqual(eligibleGifts().map((g) => g.id).sort());
   });
@@ -27,9 +27,14 @@ describe("gift lottery", () => {
     const counts: Record<string, number> = {};
     const N = 50000;
     for (let i = 0; i < N; i++) {
-      const id = shuffle(eligibleGifts())[0]!.id;
+      const gift = shuffle(eligibleGifts())[0];
+      if (!gift) throw new Error("Lottery pool is empty");
+      const id = gift.id;
       counts[id] = (counts[id] ?? 0) + 1;
     }
     for (const c of Object.values(counts)) expect(Math.abs(c / N - 0.25)).toBeLessThan(0.015);
+  });
+  it("has two mystery prizes with the requested hidden rewards", () => {
+    expect(GIFTS.filter((gift) => gift.mysteryLabel).map((gift) => gift.name)).toEqual(["Me 🫶", "You Owe Me A Kissy 💋"]);
   });
 });
