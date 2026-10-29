@@ -7,15 +7,15 @@ describe("gift lottery", () => {
     expect(GIFTS).toHaveLength(9);
   });
 
-  it("pool contains exactly the four eligible gifts", () => {
+  it("pool contains exactly the three eligible gifts", () => {
     expect(eligibleGifts().map((g) => g.id).sort()).toEqual(
-      ["date", "massage", "mystery_0120_a", "mystery_0120_b"].sort(),
+      ["date", "mystery_0120_a", "mystery_0120_b"].sort(),
     );
   });
 
   it("display-only gifts can never be drawn", () => {
     const ids = eligibleGifts().map((g) => g.id);
-    for (const id of ["phone", "dance_video", "makeup_set", "book_set", "custom_gift"]) expect(ids).not.toContain(id);
+    for (const id of ["phone", "dance_video", "makeup_set", "book_set", "custom_gift", "massage"]) expect(ids).not.toContain(id);
   });
 
   it("shuffle keeps the same four entries", () => {
