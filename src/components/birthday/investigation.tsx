@@ -12,9 +12,9 @@ export function Investigation({ onNext }: { onNext: () => void }) {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <ScrapPage tag="scene 3 ✦ case file #0120">
+    <ScrapPage tag="scene 3 ✦ the multiverse files">
       <img src={catDetective} alt="" width={816} height={816} loading="lazy" className="sticker absolute -left-5 -top-12 h-24 w-24 -rotate-12 sm:h-28 sm:w-28" />
-      <SceneTitle sub="tap each exhibit to inspect the evidence 🔍">The Extremely Serious Investigation</SceneTitle>
+      <SceneTitle sub="tap each universe to peek inside 🔍">Us, In Other Universes</SceneTitle>
 
       <div className="grid gap-6 sm:grid-cols-2">
         {CONFIG.evidence.map((ev, i) => {
@@ -52,7 +52,7 @@ export function Investigation({ onNext }: { onNext: () => void }) {
         })}
       </div>
 
-      <p className="font-hand mt-8 text-center text-2xl">Verdict: guilty of being way too cute. Sentence: one gift. 🎁</p>
+      <p className="font-hand mt-8 text-center text-2xl">Verdict: in every universe, I'd still find you. Sentence: one gift. 🎁</p>
       <div className="mt-4 text-center">
         <PillButton onClick={onNext}>Take me to the gifts 🎁</PillButton>
       </div>

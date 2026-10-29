@@ -18,22 +18,22 @@ export const CONFIG = {
   /** Evidence cards for the investigation. Add a `photo` URL to replace the placeholder. */
   evidence: [
     {
-      title: "EXHIBIT A: CERTIFIED CUTIE",
+      title: "UNIVERSE A: THE BOOKSTORE 📖",
       caption:
-        "Evidence strongly suggests that this individual is excessively adorable. The investigation remains ongoing.",
-      reveal: "[SHARED_MEMORY_1]",
+        "In this universe, we both reach for the same book at the exact same moment. Classic meet-cute. The book is terrible. We don't care.",
+      reveal: "In every universe, I still pick you first.",
       photo: "" as string,
     },
     {
-      title: "EXHIBIT B: SUSPICIOUS SMILE",
-      caption: "Witnesses report sudden mood improvements whenever this smile appears. Highly dangerous.",
-      reveal: "[SHARED_MEMORY_2]",
+      title: "UNIVERSE B: THE RAINY BUS STOP ☔",
+      caption: "One umbrella, two strangers, zero personal space. Scientists confirm the rain was not the reason neither of us left.",
+      reveal: "Even as strangers, you'd still be my favorite person.",
       photo: "" as string,
     },
     {
-      title: "EXHIBIT C: CRIMES OF CUTENESS",
-      caption: "Repeat offender. Shows zero remorse. Somehow still innocent.",
-      reveal: "[SHARED_MEMORY_3]",
+      title: "UNIVERSE C: THE CAT CAFÉ 🐱",
+      caption: "We fight over the last cat sticker. You win, obviously. Some things are constant across all timelines.",
+      reveal: "Every timeline has the same ending: you, me, and a little chaos.",
       photo: "" as string,
     },
   ],
@@ -97,8 +97,7 @@ export const GIFTS: Gift[] = [
     id: "massage",
     name: "At Least 40 Minutes of Genuine Massage 💆",
     description: "At least 40 minutes of relaxing massage, totally at your comfort.",
-    lotteryEligible: true,
-    message: "RELAXATION QUEEN UNLOCKED 🧸💆 Minimum 40 minutes of actual relaxation. No pressure, just comfort.",
+    lotteryEligible: false,
   },
   { id: "phone", name: "A New Phone 📱", description: "A new phone; model and details to be discussed separately.", lotteryEligible: false },
   {
