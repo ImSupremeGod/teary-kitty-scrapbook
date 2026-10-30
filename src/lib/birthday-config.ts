@@ -94,13 +94,6 @@ export const GIFTS: Gift[] = [
   { id: "makeup_set", name: "A Makeup Set of Your Choice 💄", description: "A makeup set you get to choose.", lotteryEligible: false },
   { id: "book_set", name: "A New Book Set 📚", description: "A set of books picked for your reading taste.", lotteryEligible: false },
   {
-    id: "massage",
-    name: "At Least 40 Minutes of Genuine Massage 💆",
-    description: "At least 40 minutes of relaxing massage, totally at your comfort.",
-    lotteryEligible: false,
-  },
-  { id: "phone", name: "A New Phone 📱", description: "A new phone; model and details to be discussed separately.", lotteryEligible: false },
-  {
     id: "custom_gift",
     name: "Your Own Wish 🎀",
     description: "Write any gift you want in the blank field.",
