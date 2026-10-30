@@ -4,6 +4,15 @@
  */
 import asgardPhoto from "@/assets/universe-asgard.webp.asset.json";
 
+export type ChatLine = { me?: string; you?: string };
+export type Evidence = {
+  title: string;
+  caption?: string;
+  photo?: string;
+  chat?: ChatLine[];
+  reveal: string;
+};
+
 export const CONFIG = {
   recipientName: "Anusha",
   birthday: "[BIRTHDAY_DATE]",
