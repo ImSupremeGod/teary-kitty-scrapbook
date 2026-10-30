@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
+import { GIFTS } from "@/lib/birthday-config";
 import { freshProgress, restoreProgress } from "@/lib/birthday-progress";
+
+const blankDeck = (id: string) => Array.from({ length: GIFTS.length }, (_, i) => (i === 0 ? id : ""));
 
 describe("saved birthday progress", () => {
   it("recovers from invalid or out-of-range scenes", () => {
