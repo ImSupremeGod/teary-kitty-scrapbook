@@ -2,6 +2,17 @@
  * ✏️ PERSONALIZATION — edit everything in this one file.
  * Values in [BRACKETS] are placeholders that must be replaced before sharing.
  */
+import asgardPhoto from "@/assets/universe-asgard.webp.asset.json";
+
+export type ChatLine = { me?: string; you?: string };
+export type Evidence = {
+  title: string;
+  caption?: string;
+  photo?: string;
+  chat?: ChatLine[];
+  reveal: string;
+};
+
 export const CONFIG = {
   recipientName: "Anusha",
   birthday: "[BIRTHDAY_DATE]",
@@ -15,28 +26,38 @@ export const CONFIG = {
     activity: "[DATE_ACTIVITY_OR_LET_HER_CHOOSE]",
     budget: "[DATE_BUDGET]",
   },
-  /** Evidence cards for the investigation. Add a `photo` URL to replace the placeholder. */
+  /**
+   * Evidence cards for the investigation ("Us, In Other Universes").
+   * Each universe: optional `photo` URL, optional `chat` lines (Me/You), and a `reveal`.
+   * "inspect" opens the image together with the message.
+   */
   evidence: [
     {
-      title: "UNIVERSE A: THE BOOKSTORE 📖",
-      caption:
-        "In this universe, we both reach for the same book at the exact same moment. Classic meet-cute. The book is terrible. We don't care.",
-      reveal: "In every universe, I still pick you first.",
-      photo: "" as string,
+      title: "UNIVERSE: ASGARD ⚡🔨",
+      photo: asgardPhoto.url,
+      chat: [
+        { me: "Babe, I'm the one who commands lightning! How are you lifting Mjolnir?! 😭" },
+        { you: "Maybe the hammer has better taste. Now say sorry! 😂" },
+      ],
+      reveal: "I might be worthy of Mjolnir, but you're the only one who can make this God of Thunder surrender. And honestly? I'd find you in every universe, just to lose another argument with you. ❤️⚡",
     },
     {
       title: "UNIVERSE B: THE RAINY BUS STOP ☔",
       caption: "One umbrella, two strangers, zero personal space. Scientists confirm the rain was not the reason neither of us left.",
       reveal: "Even as strangers, you'd still be my favorite person.",
-      photo: "" as string,
     },
     {
       title: "UNIVERSE C: THE CAT CAFÉ 🐱",
       caption: "We fight over the last cat sticker. You win, obviously. Some things are constant across all timelines.",
       reveal: "Every timeline has the same ending: you, me, and a little chaos.",
-      photo: "" as string,
     },
-  ],
+    {
+      title: "UNIVERSE D: THE BOOKSTORE 📖",
+      caption:
+        "In this universe, we both reach for the same book at the exact same moment. Classic meet-cute. The book is terrible. We don't care.",
+      reveal: "In every universe, I still pick you first.",
+    },
+  ] as Evidence[],
   messages: [
     {
       id: "playful_affection",

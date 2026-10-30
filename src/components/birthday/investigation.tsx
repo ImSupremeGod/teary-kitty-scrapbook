@@ -22,7 +22,7 @@ export function Investigation({ onNext }: { onNext: () => void }) {
           return (
             <article key={ev.title} className={cn("polaroid relative transition-transform", TILTS[i % TILTS.length], isOpen && "sm:col-span-2 rotate-0")}>
               <span className="tape -top-3 left-1/2 -translate-x-1/2 rotate-2" aria-hidden />
-              <div className="aspect-[4/3] overflow-hidden rounded-sm bg-muted paper grid place-items-center">
+              <div className={cn("grid place-items-center overflow-hidden rounded-sm bg-muted paper", isOpen ? "aspect-[16/7]" : "aspect-[4/3]")}>
                 {ev.photo ? (
                   <img src={ev.photo} alt={ev.title} className="h-full w-full object-cover" loading="lazy" />
                 ) : (
@@ -33,12 +33,25 @@ export function Investigation({ onNext }: { onNext: () => void }) {
                 )}
               </div>
               <h3 className="mt-3 text-2xl text-cherry">{ev.title}</h3>
-              <p className="text-sm">{ev.caption}</p>
+              {ev.caption && <p className="text-sm">{ev.caption}</p>}
               {isOpen && (
-                <p className="animate-pop font-hand mt-3 rounded-xl bg-secondary/60 p-3 text-xl">
-                  <Heart className="mr-1 inline h-5 w-5" />
-                  {ev.reveal}
-                </p>
+                <div className="animate-pop mt-3 space-y-2">
+                  {ev.chat?.map((line, j) =>
+                    line.me ? (
+                      <p key={j} className="font-hand ml-auto w-fit max-w-[90%] rounded-2xl rounded-br-sm bg-candy px-4 py-2 text-xl text-primary-foreground">
+                        Me: {line.me}
+                      </p>
+                    ) : (
+                      <p key={j} className="font-hand w-fit max-w-[90%] rounded-2xl rounded-bl-sm bg-secondary px-4 py-2 text-xl text-secondary-foreground">
+                        You: {line.you}
+                      </p>
+                    ),
+                  )}
+                  <p className="font-hand mt-2 rounded-xl bg-secondary/60 p-3 text-xl">
+                    <Heart className="mr-1 inline h-5 w-5" />
+                    {ev.reveal}
+                  </p>
+                </div>
               )}
               <button
                 className="font-hand absolute bottom-2 right-3 text-lg text-primary underline decoration-wavy underline-offset-4"
