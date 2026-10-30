@@ -42,6 +42,12 @@ export const CONFIG = {
       caption: "We fight over the last cat sticker. You win, obviously. Some things are constant across all timelines.",
       reveal: "Every timeline has the same ending: you, me, and a little chaos.",
     },
+    {
+      title: "UNIVERSE D: THE BOOKSTORE 📖",
+      caption:
+        "In this universe, we both reach for the same book at the exact same moment. Classic meet-cute. The book is terrible. We don't care.",
+      reveal: "In every universe, I still pick you first.",
+    },
   ],
   messages: [
     {
