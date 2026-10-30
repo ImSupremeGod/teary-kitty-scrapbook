@@ -57,7 +57,7 @@ export const CONFIG = {
         "In this universe, we both reach for the same book at the exact same moment. Classic meet-cute. The book is terrible. We don't care.",
       reveal: "In every universe, I still pick you first.",
     },
-  ],
+  ] as Evidence[],
   messages: [
     {
       id: "playful_affection",
