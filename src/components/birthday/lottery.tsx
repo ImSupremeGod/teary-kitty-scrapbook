@@ -59,7 +59,7 @@ export function Lottery({
         Pick Your Birthday Destiny, Princess 🎀
       </SceneTitle>
 
-      {/* Catalogue: all nine gifts */}
+      {/* Catalogue: all gifts */}
       <div className="grid gap-3 sm:grid-cols-2">
         {GIFTS.map((g, i) => (
           <div
@@ -100,7 +100,7 @@ export function Lottery({
 
       {!deck && (
         <div className="mt-6 text-center">
-          <p className="text-sm">All 9 gifts are in the draw. Pick one blind card. No take-backs. 😌</p>
+          <p className="text-sm">All 7 gifts are in the draw. Pick one blind card. No take-backs. 😌</p>
           {error && <p className="mt-2 font-bold text-destructive" role="alert">{error}</p>}
           <PillButton className="mt-4 text-lg" onClick={startDraw}>SHUFFLE MY DESTINY 💗</PillButton>
         </div>

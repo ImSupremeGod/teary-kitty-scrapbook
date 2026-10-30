@@ -3,8 +3,8 @@ import { GIFTS } from "@/lib/birthday-config";
 import { eligibleGifts, shuffle } from "@/lib/lottery";
 
 describe("gift lottery", () => {
-  it("catalogue shows all nine gifts", () => {
-    expect(GIFTS).toHaveLength(9);
+  it("catalogue shows all seven gifts", () => {
+    expect(GIFTS).toHaveLength(7);
   });
 
   it("pool contains exactly the three eligible gifts", () => {
@@ -15,7 +15,7 @@ describe("gift lottery", () => {
 
   it("display-only gifts can never be drawn", () => {
     const ids = eligibleGifts().map((g) => g.id);
-    for (const id of ["phone", "dance_video", "makeup_set", "book_set", "custom_gift", "massage"]) expect(ids).not.toContain(id);
+    for (const id of ["dance_video", "makeup_set", "book_set", "custom_gift"]) expect(ids).not.toContain(id);
   });
 
   it("shuffle keeps the same three entries", () => {
