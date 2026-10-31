@@ -75,7 +75,7 @@ export function Investigation({ onNext }: { onNext: () => void }) {
             {CONFIG.evidence.map((ev, i) => {
               const { label, emoji } = splitTitle(ev.title);
               return (
-                <div key={ev.title} className="flex w-36 flex-col items-center gap-1.5">
+                <div key={ev.title} className="flex w-32 flex-col items-center gap-1.5">
                   <span
                     aria-hidden
                     className={cn("planet relative grid h-24 w-24 animate-bob place-items-center text-3xl sm:h-28 sm:w-28 sm:text-4xl", `planet-${(i % 4) + 1}`)}

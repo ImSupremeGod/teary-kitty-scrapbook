@@ -203,6 +203,7 @@
 }
 
 /* Multiverse travel map: starry backdrop + pastel planets */
+@source inline("planet-1 planet-2 planet-3 planet-4");
 @utility cosmos {
   background-color: oklch(0.38 0.09 320);
   background-image:
