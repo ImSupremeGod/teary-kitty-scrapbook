@@ -71,11 +71,11 @@ export function Investigation({ onNext }: { onNext: () => void }) {
       ) : (
         <div className="cosmos relative rounded-[2rem] border-[2.5px] border-ink px-4 py-6 shadow-[var(--shadow-soft)]">
           <p className="font-hand text-center text-xl text-white/90 sm:text-2xl">🚀 pick a universe to explore</p>
-          <div className="mt-5 grid grid-cols-2 gap-5 sm:grid-cols-3">
+          <div className="mt-5 flex flex-wrap justify-center gap-x-4 gap-y-6">
             {CONFIG.evidence.map((ev, i) => {
               const { label, emoji } = splitTitle(ev.title);
               return (
-                <div key={ev.title} className="flex flex-col items-center gap-1.5">
+                <div key={ev.title} className="flex w-36 flex-col items-center gap-1.5">
                   <span
                     aria-hidden
                     className={cn("planet relative grid h-24 w-24 animate-bob place-items-center text-3xl sm:h-28 sm:w-28 sm:text-4xl", `planet-${(i % 4) + 1}`)}

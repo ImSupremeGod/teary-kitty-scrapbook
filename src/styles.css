@@ -228,10 +228,10 @@
   }
 }
 
-@utility planet-1 { background: radial-gradient(circle at 32% 28%, oklch(0.8 0.13 358), oklch(0.55 0.18 350)); }
-@utility planet-2 { background: radial-gradient(circle at 32% 28%, oklch(0.86 0.09 300), oklch(0.62 0.14 300)); }
-@utility planet-3 { background: radial-gradient(circle at 32% 28%, oklch(0.93 0.09 90), oklch(0.76 0.13 70)); }
-@utility planet-4 { background: radial-gradient(circle at 32% 28%, oklch(0.86 0.08 210), oklch(0.6 0.12 240)); }
+@utility planet-1 { background: radial-gradient(circle at 32% 28%, oklch(0.85 0.12 358), oklch(0.62 0.2 352)); }
+@utility planet-2 { background: radial-gradient(circle at 32% 28%, oklch(0.88 0.09 300), oklch(0.66 0.16 305)); }
+@utility planet-3 { background: radial-gradient(circle at 32% 28%, oklch(0.95 0.09 90), oklch(0.8 0.14 75)); }
+@utility planet-4 { background: radial-gradient(circle at 32% 28%, oklch(0.88 0.08 210), oklch(0.66 0.13 235)); }
 
 @keyframes float-up {
   0% { transform: translateY(0) rotate(0); opacity: 0; }
