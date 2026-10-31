@@ -202,6 +202,37 @@
   background: var(--gradient-drama);
 }
 
+/* Multiverse travel map: starry backdrop + pastel planets */
+@utility cosmos {
+  background-color: oklch(0.38 0.09 320);
+  background-image:
+    radial-gradient(circle, oklch(1 0 0 / 0.9) 1.1px, transparent 1.6px),
+    radial-gradient(circle, oklch(1 0 0 / 0.65) 1px, transparent 1.5px),
+    radial-gradient(circle at 50% -20%, oklch(0.55 0.14 330 / 0.9), transparent 70%);
+  background-size: 84px 84px, 52px 52px, 100% 100%;
+  background-position: 12px 24px, 38px 8px, 0 0;
+}
+
+@utility planet {
+  border: 2.5px solid var(--ink);
+  border-radius: 9999px;
+  box-shadow: 4px 5px 0 oklch(0.33 0.07 350 / 0.55), inset -5px -7px 0 oklch(0.25 0.06 320 / 0.28);
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 20% -24%;
+    border: 2.5px solid oklch(0.94 0.08 95 / 0.85);
+    border-radius: 9999px;
+    transform: rotate(-16deg);
+    pointer-events: none;
+  }
+}
+
+@utility planet-1 { background: radial-gradient(circle at 32% 28%, oklch(0.8 0.13 358), oklch(0.55 0.18 350)); }
+@utility planet-2 { background: radial-gradient(circle at 32% 28%, oklch(0.86 0.09 300), oklch(0.62 0.14 300)); }
+@utility planet-3 { background: radial-gradient(circle at 32% 28%, oklch(0.93 0.09 90), oklch(0.76 0.13 70)); }
+@utility planet-4 { background: radial-gradient(circle at 32% 28%, oklch(0.86 0.08 210), oklch(0.6 0.12 240)); }
+
 @keyframes float-up {
   0% { transform: translateY(0) rotate(0); opacity: 0; }
   10% { opacity: 0.9; }
