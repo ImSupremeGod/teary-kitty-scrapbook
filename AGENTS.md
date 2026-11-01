@@ -12,3 +12,4 @@
 - Birthday site: all personal text and the gift catalogue live in src/lib/birthday-config.ts; lottery pool is derived from lotteryEligible in src/lib/lottery.ts (tested) so content edits never touch logic.
 - Validate session progress through src/lib/birthday-progress.ts before rendering; malformed or stale progress must restart safely rather than leave a blank or unwinnable scene.
 - Keep scratch completion in lottery progress and retain sound preferences on replay; replay restarts the song without losing the recipient's audio choices.
+- Universe travel visuals belong in the investigation scene and global semantic tokens; keep destination content in birthday-config so visual edits cannot alter personal messages or lottery behavior.

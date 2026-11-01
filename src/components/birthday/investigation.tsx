@@ -1,8 +1,9 @@
 import { useState } from "react";
 import catDetective from "@/assets/cat-detective.png";
 import catGift from "@/assets/cat-gift.png";
+import journeyArt from "@/assets/multiverse-journey.jpg";
 import { CONFIG } from "@/lib/birthday-config";
-import { Heart, PillButton, ScrapPage, SceneTitle } from "./decor";
+import { Heart, PillButton, SceneTitle, Star } from "./decor";
 import { play } from "@/lib/sfx";
 import { cn } from "@/lib/utils";
 
@@ -20,27 +21,36 @@ export function Investigation({ onNext }: { onNext: () => void }) {
   const current = open === null ? undefined : CONFIG.evidence[open];
 
   return (
-    <ScrapPage tag="scene 3 ✦ the multiverse files">
-      <img src={catDetective} alt="" width={816} height={816} loading="lazy" className="sticker absolute -left-5 -top-12 h-24 w-24 -rotate-12 sm:h-28 sm:w-28" />
-      <SceneTitle sub="travelling the multiverse — explore a universe to peek inside 🔍">Us, In Other Universes</SceneTitle>
+    <section className="relative mx-auto w-full max-w-4xl">
+      <div className="relative mx-auto max-w-2xl px-3">
+        <img src={catDetective} alt="" width={816} height={816} loading="lazy" className="sticker absolute -left-3 -top-7 h-16 w-16 -rotate-12 sm:h-24 sm:w-24" />
+        <SceneTitle sub="one little spaceship. every universe. always us. ♡">Us, In Other Universes</SceneTitle>
+      </div>
 
       {current ? (
-        <article className="animate-pop">
-          <p className="font-hand mb-2 text-center text-xl text-muted-foreground">🚀 now travelling to…</p>
-          <div className="relative aspect-[16/9] overflow-hidden rounded-[2rem] border-[2.5px] border-ink shadow-[var(--shadow-soft)]">
+        <article className="universe-arrival mx-auto max-w-2xl">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <PillButton variant="lavender" className="px-3 py-2 text-sm" onClick={() => { setOpen(null); play("flip"); }}>← multiverse</PillButton>
+            <p className="font-hand text-right text-xl text-muted-foreground">🚀 destination reached</p>
+          </div>
+          <div className="polaroid relative">
+          <div className="relative overflow-hidden rounded-sm">
             {current.photo ? (
-              <img src={current.photo} alt={current.title} className="h-full w-full object-cover" />
+              <img src={current.photo} alt={current.title} className="block h-auto w-full" />
             ) : (
               <div className="cosmos grid h-full w-full place-items-center">
                 <div className="text-center">
                   <img src={catGift} alt="" width={816} height={816} loading="lazy" className="sticker mx-auto h-20 w-20 opacity-90" />
-                  <p className="font-hand mt-1 text-lg text-white/90">photo loading... (developer is choosing the cutest one)</p>
+                  <p className="font-hand mt-1 text-lg text-space-foreground">photo loading... (developer is choosing the cutest one)</p>
                 </div>
               </div>
             )}
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/85 to-transparent px-4 pb-3 pt-12 text-center">
-              <h3 className="font-hand text-2xl text-white sm:text-4xl">{current.title}</h3>
+              <h3 className="font-hand text-2xl text-space-foreground sm:text-4xl">{current.title}</h3>
             </div>
+          </div>
+          <span className="tape -top-3 left-1/2 -translate-x-1/2 rotate-3" aria-hidden />
+          <p className="font-hand absolute inset-x-0 bottom-1 text-center text-lg text-muted-foreground">a little postcard from another lifetime ♡</p>
           </div>
 
           <div className="mt-4 space-y-2">
@@ -69,22 +79,33 @@ export function Investigation({ onNext }: { onNext: () => void }) {
           </div>
         </article>
       ) : (
-        <div className="cosmos relative rounded-[2rem] border-[2.5px] border-ink px-4 py-6 shadow-[var(--shadow-soft)]">
-          <p className="font-hand text-center text-xl text-white/90 sm:text-2xl">🚀 pick a universe to explore</p>
-          <div className="mt-5 flex flex-wrap justify-center gap-x-4 gap-y-6">
+        <div className="journey-map relative isolate overflow-hidden rounded-lg border-2 border-ink px-3 pb-12 pt-8 sm:px-10">
+          <img src={journeyArt} alt="" width={1536} height={1024} className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover" />
+          <div className="journey-shade pointer-events-none absolute inset-0 -z-10" />
+          <div className="relative text-center text-space-foreground">
+            <p className="mb-2 text-xs font-bold uppercase tracking-widest text-space-accent">Shanu & Anusha · cosmic departures</p>
+            <h3 className="font-hand text-4xl sm:text-5xl">Our little multiverse</h3>
+            <p className="font-hand mt-2 text-xl">next stop: another version of us ♡</p>
+          </div>
+          <div className="flight-path relative mx-auto mb-5 mt-5 h-16 max-w-md" aria-hidden>
+            <span className="journey-rocket absolute left-0 top-0 text-4xl">🚀</span>
+            <Star className="absolute right-0 top-3 h-6 w-6" />
+          </div>
+          <div className="destination-grid relative grid grid-cols-2 gap-x-3 gap-y-10 sm:grid-cols-3 sm:gap-x-8">
             {CONFIG.evidence.map((ev, i) => {
               const { label, emoji } = splitTitle(ev.title);
               return (
-                <div key={ev.title} className="flex w-32 flex-col items-center gap-1.5">
+                <div key={ev.title} className="destination-stop relative flex min-w-0 flex-col items-center gap-2">
+                  <p className="font-hand text-sm text-space-accent">✦ stop {String(i + 1).padStart(2, "0")}</p>
                   <span
                     aria-hidden
-                    className={cn("planet relative grid h-24 w-24 animate-bob place-items-center text-3xl sm:h-28 sm:w-28 sm:text-4xl", `planet-${(i % 4) + 1}`)}
-                    style={{ animationDelay: `${(i % 3) * 0.5}s` }}
+                    className={cn("planet destination-planet relative grid h-24 w-24 animate-bob place-items-center sm:h-28 sm:w-28", `planet-${(i % 4) + 1}`)}
                   >
-                    {emoji}
+                    {ev.photo && <img src={ev.photo} alt="" loading="lazy" className="h-full w-full rounded-full object-cover" />}
+                    <span className="absolute -bottom-1 -right-1 rounded-full border-2 border-ink bg-card p-1 text-xl">{emoji}</span>
                   </span>
-                  <p className="font-hand text-center text-lg leading-tight text-white">{label}</p>
-                  <PillButton className="px-3 py-1.5 text-sm" onClick={() => { setOpen(i); play("flip"); }}>
+                  <p className="font-hand flex min-h-12 items-center justify-center text-center text-lg leading-tight text-space-foreground">{label.replace(/^UNIVERSE:\s*/, "")}</p>
+                  <PillButton aria-label={`Explore ${label}`} className="px-4 py-2 text-sm" onClick={() => { setOpen(i); play("flip"); }}>
                     explore 🚀
                   </PillButton>
                 </div>
@@ -98,6 +119,6 @@ export function Investigation({ onNext }: { onNext: () => void }) {
       <div className="mt-4 text-center">
         <PillButton onClick={onNext}>Take me to the gifts 🎁</PillButton>
       </div>
-    </ScrapPage>
+    </section>
   );
 }
