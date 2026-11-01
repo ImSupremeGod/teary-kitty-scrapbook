@@ -6,6 +6,9 @@ import asgardPhoto from "@/assets/universe-asgard.webp.asset.json";
 import mirrorPhoto from "@/assets/universe-mirror-dimension.png.asset.json";
 import titanicPhoto from "@/assets/universe-titanic.png.asset.json";
 import peaceTreatyPhoto from "@/assets/universe-peace-treaty.png.asset.json";
+import hogwartsPhoto from "@/assets/universe-hogwarts.png.asset.json";
+import avengersPhoto from "@/assets/universe-avengers.png.asset.json";
+import ancientEgyptPhoto from "@/assets/universe-ancient-egypt.png.asset.json";
 
 export type ChatLine = { me?: string; you?: string };
 export type Evidence = {
@@ -73,6 +76,38 @@ export const CONFIG = {
         { you: "Aww, you really think you get to make the rules? Cute! The remote, movies and final decisions are all mine. 😌" },
       ],
       reveal: "And somehow, no matter how many rules we disagree on, you're still my favourite person to share this little chaos of a life with. ❤️",
+    },
+    {
+      title: "UNIVERSE: HOGWARTS 🪄✨",
+      photo: hogwartsPhoto.url,
+      caption: "In this universe, we're at Hogwarts, and you've decided to use me as your personal experiment. One flick of your wand later, I'm dressed in pink and questioning our entire relationship. 😂",
+      chat: [
+        { me: "OI! What spell did you just use on me?!" },
+        { you: "The Glamourus Maximus! You're welcome. 💅" },
+        { me: "I came here to learn magic, not become your fashion project!" },
+        { you: "Shhh! Pink suits you. Now say thank you! 😂" },
+      ],
+      reveal: "Turns out, even the strongest wizard in Hogwarts can't defend himself against your magic. And honestly, I wouldn't want to. ❤️",
+    },
+    {
+      title: "UNIVERSE: AVENGERS 🦸‍♀️💥",
+      photo: avengersPhoto.url,
+      caption: "The city's under attack, you're busy saving the world, and I'm stuck carrying your bag! 😂",
+      chat: [
+        { me: "Babe, there's a giant robot behind us!" },
+        { you: "And? Don't forget my bag! 😏" },
+      ],
+      reveal: "I may not always be the hero of the story, but as long as I'm fighting alongside you, I'm exactly where I want to be. ❤️",
+    },
+    {
+      title: "UNIVERSE: ANCIENT EGYPT 🐈👑",
+      photo: ancientEgyptPhoto.url,
+      caption: "In this universe, you're Cleopatra, relaxing on your throne while I'm busy looking after your royal army of cats. 😂",
+      chat: [
+        { me: "Babe, how many cats do you need?!" },
+        { you: "As many as I want. Now get their treats! 😏" },
+      ],
+      reveal: "I may not rule a kingdom, but if you're my queen, I guess I've already found my place in the palace. ❤️",
     },
   ] as Evidence[],
   messages: [
