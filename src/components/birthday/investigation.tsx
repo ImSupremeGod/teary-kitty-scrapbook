@@ -44,6 +44,7 @@ export function Investigation({ onNext }: { onNext: () => void }) {
           </div>
 
           <div className="mt-4 space-y-2">
+            {current.caption && <p className="font-hand rounded-xl bg-card p-3 text-lg">{current.caption}</p>}
             {current.chat?.map((line, j) =>
               line.me ? (
                 <p key={j} className="font-hand ml-auto w-fit max-w-[90%] rounded-2xl rounded-br-sm bg-candy px-4 py-2 text-xl text-primary-foreground">
@@ -55,7 +56,6 @@ export function Investigation({ onNext }: { onNext: () => void }) {
                 </p>
               ),
             )}
-            {current.caption && <p className="font-hand rounded-xl bg-card p-3 text-lg">{current.caption}</p>}
             <p className="font-hand rounded-xl bg-secondary/60 p-3 text-xl">
               <Heart className="mr-1 inline h-5 w-5" />
               {current.reveal}
