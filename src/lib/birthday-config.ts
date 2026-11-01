@@ -3,6 +3,9 @@
  * Values in [BRACKETS] are placeholders that must be replaced before sharing.
  */
 import asgardPhoto from "@/assets/universe-asgard.webp.asset.json";
+import mirrorPhoto from "@/assets/universe-mirror-dimension.png.asset.json";
+import titanicPhoto from "@/assets/universe-titanic.png.asset.json";
+import peaceTreatyPhoto from "@/assets/universe-peace-treaty.png.asset.json";
 
 export type ChatLine = { me?: string; you?: string };
 export type Evidence = {
@@ -42,20 +45,34 @@ export const CONFIG = {
       reveal: "I might be worthy of Mjolnir, but you're the only one who can make this God of Thunder surrender. And honestly? I'd find you in every universe, just to lose another argument with you. ❤️⚡",
     },
     {
-      title: "UNIVERSE B: THE RAINY BUS STOP ☔",
-      caption: "One umbrella, two strangers, zero personal space. Scientists confirm the rain was not the reason neither of us left.",
-      reveal: "Even as strangers, you'd still be my favorite person.",
+      title: "UNIVERSE: MIRROR DIMENSION 🌀✨",
+      photo: mirrorPhoto.url,
+      caption: "I'm Doctor Strange, trying to escape through a portal, but somehow you're already waiting on the other side. 😂",
+      chat: [
+        { me: "How are you everywhere?!" },
+        { you: "You really thought you could escape me? 😏" },
+      ],
+      reveal: "I can travel across the multiverse, but somehow, my favourite destination is always you. ❤️",
     },
     {
-      title: "UNIVERSE C: THE CAT CAFÉ 🐱",
-      caption: "We fight over the last cat sticker. You win, obviously. Some things are constant across all timelines.",
-      reveal: "Every timeline has the same ending: you, me, and a little chaos.",
+      title: "UNIVERSE: TITANIC 🚢🌅",
+      photo: titanicPhoto.url,
+      caption: "In this universe, you're Rose, enjoying the wind at the front of the Titanic, while I'm Jack, holding you from behind and trying not to get blown away. 😂",
+      chat: [
+        { me: "I'm the king of the world!" },
+        { you: "Pehle mujhe theek se pakdo, Mr. Jack! 😂" },
+      ],
+      reveal: "The Titanic may have been a one-time love story, but I'd choose you in every lifetime, on every ship, in every universe. ❤️",
     },
     {
-      title: "UNIVERSE D: THE BOOKSTORE 📖",
-      caption:
-        "In this universe, we both reach for the same book at the exact same moment. Classic meet-cute. The book is terrible. We don't care.",
-      reveal: "In every universe, I still pick you first.",
+      title: "UNIVERSE: THE PEACE TREATY 🛋️😂",
+      photo: peaceTreatyPhoto.url,
+      caption: "I've prepared an official peace treaty: 50-50 remote sharing, one movie of my choice, and no endless reels.",
+      chat: [
+        { me: "See? I've thought of everything. Now sign it!" },
+        { you: "Aww, you really think you get to make the rules? Cute! The remote, movies and final decisions are all mine. 😌" },
+      ],
+      reveal: "And somehow, no matter how many rules we disagree on, you're still my favourite person to share this little chaos of a life with. ❤️",
     },
   ] as Evidence[],
   messages: [
