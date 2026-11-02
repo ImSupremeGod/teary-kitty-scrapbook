@@ -3,7 +3,8 @@ name: Build Hostinger static site
 on:
   workflow_dispatch:
   push:
-    branches: [hostinger-static-deploy]
+    branches:
+      - hostinger-static-deploy
 
 permissions:
   contents: read
@@ -12,27 +13,48 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
+      - name: Check out deployment branch
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-      - uses: actions/setup-node@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: bun
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
-      - name: Build application
+
+      - name: Copy Lovable-hosted media into the site
+        run: node scripts/prepare-static-assets.mjs
+        env:
+          LOVABLE_ASSET_ORIGIN: https://teary-kitty-scrapbook.lovable.app
+
+      - name: Build prerendered static website
         run: bun run build
-      - name: Inspect output
+
+      - name: Verify generated homepage and local assets
+        shell: bash
         run: |
-          echo "Build output tree:"
-          find .output -maxdepth 4 -type f | head -200 || true
-          echo "Static/public files:"
-          find .output/public -maxdepth 3 -type f | head -100 || true
-          test -d .output/public
-          test -f .output/public/index.html
-      - name: Package for Hostinger
+          set -euo pipefail
+          if [ ! -f .output/public/index.html ]; then
+            echo "Expected .output/public/index.html was not generated."
+            echo "Build output:"
+            find .output -maxdepth 4 -type f | head -200 || true
+            exit 1
+          fi
+          if grep -R -nE '/__l5e/assets-v1/' .output/public; then
+            echo "Found unresolved Lovable asset URLs in static output."
+            exit 1
+          fi
+          test -d .output/public/lovable-assets
+          echo "Static site and local media assets verified."
+
+      - name: Add Hostinger Apache configuration
         run: |
           cat > .output/public/.htaccess <<'HTACCESS'
           Options -Indexes
@@ -44,10 +66,16 @@ jobs:
             AddType video/mp4 .mp4
           </IfModule>
           HTACCESS
+
+      - name: Package upload files
+        run: |
           cd .output/public
           zip -r ../../hostinger-site.zip .
-      - uses: actions/upload-artifact@v4
+
+      - name: Upload Hostinger package
+        uses: actions/upload-artifact@v4
         with:
           name: hostinger-site
           path: hostinger-site.zip
           if-no-files-found: error
+          retention-days: 14
