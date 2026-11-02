@@ -34,31 +34,50 @@ jobs:
         env:
           LOVABLE_ASSET_ORIGIN: https://teary-kitty-scrapbook.lovable.app
 
-      - name: Build prerendered static website
-        run: bun run build
+      - name: Build static SPA for Hostinger
+        run: bunx vite build --config vite.config.hostinger.ts
 
-      - name: Verify generated homepage and local assets
+      - name: Verify and prepare static site
         shell: bash
         run: |
           set -euo pipefail
-          if [ ! -f .output/public/index.html ]; then
-            echo "Expected .output/public/index.html was not generated."
-            echo "Build output:"
-            find .output -maxdepth 4 -type f | head -200 || true
-            exit 1
-          fi
-          if grep -R -nE '/__l5e/assets-v1/' .output/public; then
-            echo "Found unresolved Lovable asset URLs in static output."
-            exit 1
-          fi
-          test -d .output/public/lovable-assets
-          echo "Static site and local media assets verified."
 
-      - name: Add Hostinger Apache configuration
-        run: |
-          cat > .output/public/.htaccess <<'HTACCESS'
+          if [ -f dist/client/_shell.html ]; then
+            SITE_DIR="dist/client"
+          elif [ -f .output/public/_shell.html ]; then
+            SITE_DIR=".output/public"
+          elif [ -f dist/client/index.html ]; then
+            SITE_DIR="dist/client"
+          elif [ -f .output/public/index.html ]; then
+            SITE_DIR=".output/public"
+          else
+            echo "Could not find the generated SPA shell or index.html."
+            echo "Build output:"
+            find dist .output -maxdepth 5 -type f 2>/dev/null | head -200 || true
+            exit 1
+          fi
+
+          if [ -f "$SITE_DIR/_shell.html" ]; then
+            cp "$SITE_DIR/_shell.html" "$SITE_DIR/index.html"
+          fi
+
+          test -f "$SITE_DIR/index.html"
+          test -d "$SITE_DIR/lovable-assets"
+          if grep -R -nE '/__l5e/assets-v1/' "$SITE_DIR"; then
+            echo "Found unresolved Lovable asset URLs in output."
+            exit 1
+          fi
+
+          cat > "$SITE_DIR/.htaccess" <<'HTACCESS'
           Options -Indexes
           DirectoryIndex index.html
+          <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteCond %{REQUEST_FILENAME} -f [OR]
+            RewriteCond %{REQUEST_FILENAME} -d
+            RewriteRule ^ - [L]
+            RewriteRule ^ index.html [L]
+          </IfModule>
           <IfModule mod_mime.c>
             AddType image/webp .webp
             AddType image/gif .gif
@@ -67,10 +86,14 @@ jobs:
           </IfModule>
           HTACCESS
 
-      - name: Package upload files
+          mkdir -p package
+          cp -a "$SITE_DIR"/. package/
+          echo "SITE_DIR=$SITE_DIR" >> "$GITHUB_ENV"
+
+      - name: Package files for Hostinger
         run: |
-          cd .output/public
-          zip -r ../../hostinger-site.zip .
+          cd package
+          zip -r ../hostinger-site.zip .
 
       - name: Upload Hostinger package
         uses: actions/upload-artifact@v4
