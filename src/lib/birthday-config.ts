@@ -163,14 +163,14 @@ export const GIFTS: Gift[] = [
     message:
       "DATE UNLOCKED! 💗 Your mission: choose a date you would love. My mission: make it ridiculously cute.",
   },
-  { id: "dance_video", name: "My Dance Video 💃", description: "A personalized dance video made for you.", lotteryEligible: false },
-  { id: "makeup_set", name: "A Makeup Set of Your Choice 💄", description: "A makeup set you get to choose.", lotteryEligible: false },
-  { id: "book_set", name: "A New Book Set 📚", description: "A set of books picked for your reading taste.", lotteryEligible: false },
+  { id: "dance_video", name: "My Dance Video 💃", description: "A personalized dance video made for you.", lotteryEligible: true },
+  { id: "makeup_set", name: "A Makeup Set of Your Choice 💄", description: "A makeup set you get to choose.", lotteryEligible: true },
+  { id: "book_set", name: "A New Book Set 📚", description: "A set of books picked for your reading taste.", lotteryEligible: true },
   {
     id: "custom_gift",
     name: "Your Own Wish 🎀",
     description: "Write any gift you want in the blank field.",
-    lotteryEligible: false,
+    lotteryEligible: true,
     customField: true,
     message: "YOUR WISH HAS BEEN UNLOCKED 🎀 The birthday gift department is both excited and slightly nervous.",
   },
