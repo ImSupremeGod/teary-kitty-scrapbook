@@ -1,5 +1,6 @@
 import { useState } from "react";
 import catParty from "@/assets/cat-party.png";
+import finaleVideo from "@/assets/finale-birthday-message.mp4.asset.json";
 import { CONFIG } from "@/lib/birthday-config";
 import { Bow, PillButton, ScrapPage, SceneTitle, Star } from "./decor";
 import { play } from "@/lib/sfx";
@@ -33,6 +34,13 @@ export function Finale({ onReplay, onConfetti }: { onReplay: () => void; onConfe
           {text}
         </p>
       ) : null}
+
+      {/* Special video message */}
+      <div className="mt-8 rounded-2xl border-[2.5px] border-dashed border-primary bg-muted p-4 text-center">
+        <p className="font-hand text-3xl text-primary">🎬 a special message for you</p>
+        <video src={finaleVideo.url} controls playsInline preload="metadata" className="mx-auto mt-3 max-h-96 w-auto max-w-full rounded-xl border-[2.5px] border-ink shadow-[var(--shadow-sticker)]" aria-label="Special birthday video message" />
+        <p className="font-hand mt-2 text-lg text-muted-foreground">watch till the end 😁🥰</p>
+      </div>
 
       <div className="relative mt-8 rounded-3xl border-[2.5px] border-ink bg-candy p-6 text-center text-primary-foreground">
         <Bow className="absolute -top-5 left-1/2 h-10 w-14 -translate-x-1/2" />
