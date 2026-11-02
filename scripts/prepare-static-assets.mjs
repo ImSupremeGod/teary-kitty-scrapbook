@@ -22,6 +22,15 @@ for (const name of names) {
   const sourceUrl = new URL(manifest.url, origin);
   const response = await fetch(sourceUrl);
   if (!response.ok) {
+    // This optional second track was added after the currently published
+    // Lovable deployment, so its asset route can return 404 until republished.
+    // Keep the playlist functional with the first track rather than fail all hosting.
+    if (response.status === 404 && manifest.original_filename === "birthday-song-2.mp3") {
+      manifest.url = "";
+      await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2) + "\\n");
+      console.warn(`Optional asset not published yet; skipping ${name}`);
+      continue;
+    }
     throw new Error(`Could not retrieve ${name}: HTTP ${response.status} from ${sourceUrl}`);
   }
 
