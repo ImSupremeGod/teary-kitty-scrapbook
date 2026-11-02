@@ -21,4 +21,24 @@ describe("birthday audio", () => {
     expect(await playSong()).toBe(true);
     expect(constructor).toHaveBeenCalledTimes(1);
   });
+  it("plays the second song automatically when the first one ends", async () => {
+    const first = { paused: false, ended: false, volume: 0, muted: false, play: vi.fn().mockResolvedValue(undefined), pause: vi.fn(), onended: null as null | (() => void) };
+    const second = { paused: false, ended: false, volume: 0, muted: false, play: vi.fn().mockResolvedValue(undefined), pause: vi.fn(), onended: null as null | (() => void) };
+    const constructor = vi.fn().mockImplementationOnce(() => first).mockImplementationOnce(() => second);
+    vi.stubGlobal("Audio", constructor);
+    await playSong();
+    expect(typeof first.onended).toBe("function");
+    first.onended!();
+    expect(constructor).toHaveBeenCalledTimes(2);
+    expect(second.play).toHaveBeenCalled();
+  });
+  it("does not chain to the second song after the song is stopped", async () => {
+    const first = { paused: false, ended: false, volume: 0, muted: false, play: vi.fn().mockResolvedValue(undefined), pause: vi.fn(), onended: null as null | (() => void) };
+    const constructor = vi.fn().mockImplementation(() => first);
+    vi.stubGlobal("Audio", constructor);
+    await playSong();
+    sfxState.stopSong();
+    first.onended!();
+    expect(constructor).toHaveBeenCalledTimes(1);
+  });
 });
