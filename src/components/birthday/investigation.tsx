@@ -18,7 +18,20 @@ function splitTitle(title: string): { label: string; emoji: string } {
 
 export function Investigation({ onNext }: { onNext: () => void }) {
   const [open, setOpen] = useState<number | null>(null);
+  const [travelling, setTravelling] = useState<number | null>(null);
   const current = open === null ? undefined : CONFIG.evidence[open];
+
+  /** Warp-travel interstitial, then reveal the destination universe. */
+  const explore = (i: number) => {
+    if (travelling !== null) return;
+    setTravelling(i);
+    play("flip");
+    window.setTimeout(() => {
+      setOpen(i);
+      setTravelling(null);
+      window.scrollTo({ top: 0 });
+    }, 1500);
+  };
 
   return (
     <section className="relative mx-auto w-full max-w-4xl">
@@ -26,6 +39,18 @@ export function Investigation({ onNext }: { onNext: () => void }) {
         <img src={catDetective} alt="" width={816} height={816} loading="lazy" className="sticker absolute -left-3 -top-7 h-16 w-16 -rotate-12 sm:h-24 sm:w-24" />
         <SceneTitle sub="one little spaceship. every universe. always us. ♡">Us, In Other Universes</SceneTitle>
       </div>
+
+      {travelling !== null && (
+        <div className="travel-overlay" role="status" aria-label="Travelling through the multiverse">
+          <div className="travel-stars" aria-hidden />
+          <div className="relative flex flex-col items-center">
+            <span className="travel-rocket" aria-hidden>🚀</span>
+            <p className="font-hand travel-text">
+              travelling to {splitTitle(CONFIG.evidence[travelling]?.title ?? "").label.replace(/^UNIVERSE:\s*/, "")}...
+            </p>
+          </div>
+        </div>
+      )}
 
       {current ? (
         <article className="universe-arrival mx-auto max-w-2xl">
@@ -105,7 +130,7 @@ export function Investigation({ onNext }: { onNext: () => void }) {
                     <span className="absolute -bottom-1 -right-1 rounded-full border-2 border-ink bg-card p-1 text-xl">{emoji}</span>
                   </span>
                   <p className="font-hand flex min-h-12 items-center justify-center text-center text-lg leading-tight text-space-foreground">{label.replace(/^UNIVERSE:\s*/, "")}</p>
-                  <PillButton aria-label={`Explore ${label}`} className="px-4 py-2 text-sm" onClick={() => { setOpen(i); play("flip"); }}>
+                  <PillButton aria-label={`Explore ${label}`} className="px-4 py-2 text-sm" onClick={() => explore(i)}>
                     explore 🚀
                   </PillButton>
                 </div>
