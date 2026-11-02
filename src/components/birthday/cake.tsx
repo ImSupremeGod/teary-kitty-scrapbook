@@ -1,4 +1,5 @@
 import { useState } from "react";
+import cakeMeme from "@/assets/cake-birthday-meme.mp4.asset.json";
 import { PillButton, ScrapPage, SceneTitle } from "./decor";
 import { play } from "@/lib/sfx";
 import { cn } from "@/lib/utils";
@@ -49,6 +50,14 @@ export function Cake({ onConfetti, onNext }: { onConfetti: () => void; onNext: (
         <div className="-mt-1 h-4 border-x-[2.5px] border-ink bg-card" />
         <div className="h-20 rounded-b-2xl border-[2.5px] border-t-0 border-ink bg-primary/80 text-center text-2xl leading-[5rem]">🍓 🍓 🍓</div>
         <div className="mx-auto -mt-1 h-3 w-[110%] -translate-x-[4.5%] rounded-full border-[2.5px] border-ink bg-secondary" />
+      </div>
+
+      {/* Tiny birthday meme clip */}
+      <div className="mx-auto mt-5 w-40 max-w-full -rotate-2">
+        <div className="rounded-xl border-[2.5px] border-ink bg-card p-1.5 shadow-[var(--shadow-sticker)]">
+          <video src={cakeMeme.url} controls loop playsInline preload="metadata" className="w-full rounded-lg" aria-label="Funny birthday meme video" />
+        </div>
+        <p className="font-hand mt-1 text-center text-base">mandatory birthday meme 😂</p>
       </div>
 
       <div className="mt-6 text-center" aria-live="polite">
