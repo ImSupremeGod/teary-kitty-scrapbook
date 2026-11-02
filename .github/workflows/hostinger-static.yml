@@ -1,0 +1,53 @@
+name: Build Hostinger static site
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [hostinger-static-deploy]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: bun
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Build application
+        run: bun run build
+      - name: Inspect output
+        run: |
+          echo "Build output tree:"
+          find .output -maxdepth 4 -type f | head -200 || true
+          echo "Static/public files:"
+          find .output/public -maxdepth 3 -type f | head -100 || true
+          test -d .output/public
+          test -f .output/public/index.html
+      - name: Package for Hostinger
+        run: |
+          cat > .output/public/.htaccess <<'HTACCESS'
+          Options -Indexes
+          DirectoryIndex index.html
+          <IfModule mod_mime.c>
+            AddType image/webp .webp
+            AddType image/gif .gif
+            AddType audio/mpeg .mp3
+            AddType video/mp4 .mp4
+          </IfModule>
+          HTACCESS
+          cd .output/public
+          zip -r ../../hostinger-site.zip .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hostinger-site
+          path: hostinger-site.zip
+          if-no-files-found: error
