@@ -9,7 +9,7 @@ import birthdaySong2 from "@/assets/birthday-song-2.mp3.asset.json";
 type Sfx = "pop" | "yay" | "sad" | "flip" | "blow" | "song";
 
 /** Birthday playlist: song 2 starts automatically when song 1 ends. */
-const SONGS = [birthdaySong.url, birthdaySong2.url];
+const SONGS = [birthdaySong.url, birthdaySong2.url].filter(Boolean);
 
 const FILES: Partial<Record<Sfx, string>> = {
   song: birthdaySong.url,
