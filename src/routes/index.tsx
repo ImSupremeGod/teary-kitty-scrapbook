@@ -27,7 +27,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const KEY = "birthday-chaos-v1";
+const KEY = "birthday-chaos-v2";
 function Index() {
   const [s, setS] = useState<SavedProgress>(freshProgress);
   const [loaded, setLoaded] = useState(false);
