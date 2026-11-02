@@ -84,6 +84,9 @@ jobs:
             AddType audio/mpeg .mp3
             AddType video/mp4 .mp4
           </IfModule>
+          <IfModule mod_headers.c>
+            Header always set X-Robots-Tag "noindex, nofollow, noarchive"
+          </IfModule>
           HTACCESS
 
           mkdir -p package
