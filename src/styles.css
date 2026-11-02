@@ -316,6 +316,55 @@
 }
 @utility face-back { transform: rotateY(180deg); }
 
+/* Universe warp-travel overlay (shown while flying to a destination) */
+.travel-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--space-backdrop);
+  animation: travel-fade 1.6s ease-in-out both;
+}
+.travel-stars {
+  position: absolute;
+  inset: -100%;
+  background-image:
+    radial-gradient(circle, oklch(1 0 0 / 0.9) 1.5px, transparent 2px),
+    radial-gradient(circle, oklch(0.9 0.07 355 / 0.8) 1.2px, transparent 1.8px),
+    radial-gradient(circle, oklch(0.8 0.09 300 / 0.8) 1.2px, transparent 1.8px);
+  background-size: 120px 120px, 90px 90px, 70px 70px;
+  animation: warp-zoom 0.9s linear infinite;
+}
+.travel-rocket {
+  position: relative;
+  font-size: 4.5rem;
+  animation: rocket-shake 0.35s ease-in-out infinite;
+}
+.travel-text {
+  position: relative;
+  margin-top: 1rem;
+  color: var(--space-foreground);
+  font-size: 1.6rem;
+  text-align: center;
+  padding: 0 1.5rem;
+}
+@keyframes warp-zoom {
+  from { transform: scale(0.35); opacity: 0.35; }
+  to { transform: scale(1.6); opacity: 1; }
+}
+@keyframes rocket-shake {
+  0%, 100% { transform: translate(0, 0) rotate(-45deg); }
+  25% { transform: translate(3px, -4px) rotate(-42deg); }
+  75% { transform: translate(-3px, 3px) rotate(-48deg); }
+}
+@keyframes travel-fade {
+  0% { opacity: 0; }
+  12% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;

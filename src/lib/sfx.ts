@@ -4,8 +4,12 @@
  * a soft synthesized chirp. The birthday song tries autoplay and retries on interaction.
  */
 import birthdaySong from "@/assets/birthday-song.mp3.asset.json";
+import birthdaySong2 from "@/assets/birthday-song-2.mp3.asset.json";
 
 type Sfx = "pop" | "yay" | "sad" | "flip" | "blow" | "song";
+
+/** Birthday playlist: song 2 starts automatically when song 1 ends. */
+const SONGS = [birthdaySong.url, birthdaySong2.url];
 
 const FILES: Partial<Record<Sfx, string>> = {
   song: birthdaySong.url,
@@ -15,7 +19,21 @@ let muted = false;
 let volume = 0.6;
 let current: HTMLAudioElement | null = null;
 let ctx: AudioContext | null = null;
+let songSession = false; // playlist chaining armed; cleared by stopSong
 const missing = new Set<string>();
+
+function makeSong(index: number): HTMLAudioElement {
+  const a = new Audio(SONGS[index]);
+  a.volume = volume;
+  a.onended = () => {
+    if (!songSession || index + 1 >= SONGS.length) return;
+    const next = makeSong(index + 1);
+    next.muted = muted;
+    current = next;
+    next.play().catch(() => {});
+  };
+  return a;
+}
 
 export const sfxState = {
   get muted() { return muted; },
@@ -28,7 +46,7 @@ export const sfxState = {
     }
   },
   setVolume(v: number) { volume = Math.max(0, Math.min(1, v)); if (current) current.volume = volume; },
-  stopSong() { if (current) current.pause(); current = null; },
+  stopSong() { songSession = false; if (current) current.pause(); current = null; },
 };
 
 function chirp(kind: Sfx) {
@@ -73,7 +91,8 @@ export function play(kind: Sfx) {
 export function playSong(): Promise<boolean> {
   if (muted || typeof window === "undefined") return Promise.resolve(false);
   if (current && !current.paused && !current.ended) return Promise.resolve(true);
-  const a = current && !current.ended ? current : new Audio(birthdaySong.url);
+  songSession = true;
+  const a = current && !current.ended ? current : makeSong(0);
   a.volume = volume;
   current = a;
   return a.play().then(() => true, () => false);
